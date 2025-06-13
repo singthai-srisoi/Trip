@@ -1,0 +1,28 @@
+<!-- for top tab  -->
+<script lang="ts">
+	import { page } from "$app/state";
+	import type { Snippet } from "svelte";
+
+    interface Props {
+        children: Snippet
+    }
+    let {
+        children
+    }: Props = $props()
+    $inspect(page)
+</script>
+
+<div role="tablist" class="tabs tabs-border mb-6">
+  <a role="tab" class="tab" href="/drivers"
+  class:tab-active={page.route.id?.includes('/drivers')}>
+  Drivers</a>
+  <a role="tab" class="tab" href="/users"
+    class:tab-active={page.route.id?.includes('/users')}>
+        Users
+    </a>
+  <a role="tab" class="tab" href="/vehicles"
+    class:tab-active={page.route.id?.includes('/vehicles')}>
+        Vehicles
+    </a>
+</div>
+{@render children()}
