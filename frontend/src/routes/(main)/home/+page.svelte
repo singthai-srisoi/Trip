@@ -2,7 +2,6 @@
 	import { fade, fly } from "svelte/transition";
 	import type { PageData } from "./$types";
 	import { clickOutside, tapOutside } from "$lib/directive/clickOutside.svelte";
-    import "cally";
 
     interface Props {
         data: {
@@ -49,22 +48,6 @@
         </svg>
         <input type="search" class="grow" placeholder="Search" />
     </label>
-    <button popovertarget="cally-popover1" class="input input-border" id="cally1" style="anchor-name:--cally1">
-    Pick a date
-    </button>
-    <div popover id="cally-popover1" class="dropdown bg-base-100 rounded-box shadow-lg" style="position-anchor:--cally1"
-        bind:this={cally1}
-    >
-    <!-- <calendar-date class="cally" onchange={(e: any) => cally1.innerText = e.value}>
-        <svg aria-label="Previous" class="fill-current size-4"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.75 19.5 8.25 12l7.5-7.5"></path></svg>
-        <svg aria-label="Next" class="fill-current size-4"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg>
-        <calendar-month></calendar-month>
-    </calendar-date> -->
-    <calendar-range months={2}>
-        <calendar-month></calendar-month>
-        <calendar-month offset={1}></calendar-month>
-    </calendar-range>
-    </div>
 {#each data.trips as trip, i}
     <div class="collapse collapse-arrow join-item border-1 border-gray-200 shadow-md bg-white">
         <input type="checkbox" name="my-accordion-4" />
