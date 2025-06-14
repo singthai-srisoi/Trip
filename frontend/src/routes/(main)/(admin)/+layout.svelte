@@ -9,7 +9,6 @@
     let {
         children
     }: Props = $props()
-    $inspect(page)
 </script>
 
 <div role="tablist" class="tabs tabs-border mb-6">

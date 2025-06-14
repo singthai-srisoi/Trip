@@ -3,21 +3,45 @@
 	import '../app.css';
 	import MenuIcon from './MenuIcon.svelte';
 	import { page } from '$app/state';
-	import { fade, scale } from 'svelte/transition';
+	import { fade, fly, scale } from 'svelte/transition';
 	import { elasticInOut } from 'svelte/easing';
+	import type { LayoutData } from './$types';
+	import { getPageTransition } from './pageTransition';
   interface Props {
+    data: {
+        currentPath: string;
+        previousPath: string;
+    } | LayoutData
     children: Snippet
   }
 
-	let { children }: Props = $props();
+	let { 
+    data,
+    children 
+  }: Props = $props();
   let bounce_in = {duration: 625, easing: elasticInOut, start: 0.5}
   let fade_out = {duration: 300}
 </script>
 
 <section class="min-h-screen pb-[80px] overflow-auto relative">
-  <main class="p-6 lg:p-25 md:p-10 mt-3">
-    {@render children()}
-  </main>
+  {#key data.currentPath}
+  {#await Promise.resolve(getPageTransition(data.previousPath ?? '', data.currentPath)) then tr}
+    <main
+      class="p-6 lg:p-25 md:p-10 mt-3"
+      in:tr.transition={tr.params}
+      out:fade={{ duration: 150 }}
+    >
+      {@render children()}
+    </main>
+  {/await}
+    <!-- <main class="p-6 lg:p-25 md:p-10 mt-3"
+      in:fly={{ y: 20, duration: 50 }}
+    >
+      {@render children()}
+    </main> -->
+    
+  {/key}
+  
   <footer class="footer fixed bottom-0 left-0 z-9999 w-full border-t border-base-300 grid-cols-3 items-center bg-base-200 text-base-content p-4 md:p-10 lg:px-25">
       <MenuIcon href={"/trips"} is_active={page.route.id?.includes('/(main)/trips')}>
         {#snippet active()}
