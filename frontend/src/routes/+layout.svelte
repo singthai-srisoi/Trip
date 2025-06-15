@@ -29,7 +29,6 @@
     <main
       class="p-6 lg:p-25 md:p-10 mt-3"
       in:tr.transition={tr.params}
-      out:fade={{ duration: 150 }}
     >
       {@render children()}
     </main>

@@ -9,14 +9,18 @@
   <title>Trips</title>
 </svelte:head>
 
-<div class={"mb-6 w-full flex items-baseline justify-between"}>
-  <h1 class="text-2xl font-semibold">{dt}</h1>
-  <a class="btn btn-ghost btn-sm" href="/trips/add">Add</a>
+<div class={"mb-6 w-full md:flex items-baseline justify-between"}>
+  <h1 class="text-2xl font-semibold mb-2">{dt}</h1>
+  <div class="flex gap-2">
+    <a class="btn btn-ghost btn-sm bg-base-300" href="/trips/add">Add</a>
+    <a class="btn btn-ghost btn-sm bg-base-300" href="/trips/list">View All</a>
+  </div>
+  
 </div>
 
 <section class="active-trip mb-5">
   <h2 class={"text-xl font-semibold mb-2"}>Active Trip</h2>
-  <label class="input w-full  border border-base-300 mb-2">
+  <label class="input w-full  border border-base-300 mb-2 relative">
     <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <g
         stroke-linejoin="round"
