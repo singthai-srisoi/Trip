@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model destinations {
+  id                                             Int     @id @default(autoincrement())
+  name                                           String  @unique
+  address                                        String?
+  trips_trips_end_destination_idTodestinations   trips[] @relation("trips_end_destination_idTodestinations")
+  trips_trips_start_destination_idTodestinations trips[] @relation("trips_start_destination_idTodestinations")
+}
+
+model trip_chats {
+  id        Int       @id @default(autoincrement())
+  trip_id   Int
+  user_id   Int
+  message   String
+  timestamp DateTime? @default(now()) @db.Timestamptz(6)
+  trips     trips     @relation(fields: [trip_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users     users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([trip_id], map: "idx_chat_trip_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model trips {
+  id                                                    Int          @id @default(autoincrement())
+  vehicle_id                                            Int
+  driver_id                                             Int?
+  date                                                  DateTime     @db.Date
+  trip_number                                           Int
+  is_gantung                                            Boolean?     @default(false)
+  start_destination_id                                  Int
+  end_destination_id                                    Int
+  is_checked                                            Boolean?     @default(false)
+  is_verified                                           Boolean?     @default(false)
+  is_double_checked                                     Boolean?     @default(false)
+  is_incomplete                                         Boolean?     @default(false)
+  remark                                                String?
+  created_by                                            Int?
+  created_at                                            DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at                                            DateTime?    @default(now()) @db.Timestamptz(6)
+  trip_chats                                            trip_chats[]
+  users_trips_created_byTousers                         users?       @relation("trips_created_byTousers", fields: [created_by], references: [id], onUpdate: NoAction)
+  users_trips_driver_idTousers                          users?       @relation("trips_driver_idTousers", fields: [driver_id], references: [id], onUpdate: NoAction)
+  destinations_trips_end_destination_idTodestinations   destinations @relation("trips_end_destination_idTodestinations", fields: [end_destination_id], references: [id], onUpdate: NoAction)
+  destinations_trips_start_destination_idTodestinations destinations @relation("trips_start_destination_idTodestinations", fields: [start_destination_id], references: [id], onUpdate: NoAction)
+  vehicles                                              vehicles     @relation(fields: [vehicle_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([date, vehicle_id], map: "idx_trip_date_vehicle")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model users {
+  id                            Int          @id @default(autoincrement())
+  name                          String
+  role                          user_role
+  phone                         String?
+  created_at                    DateTime?    @default(now()) @db.Timestamptz(6)
+  trip_chats                    trip_chats[]
+  trips_trips_created_byTousers trips[]      @relation("trips_created_byTousers")
+  trips_trips_driver_idTousers  trips[]      @relation("trips_driver_idTousers")
+}
+
+model vehicles {
+  id         Int       @id @default(autoincrement())
+  plate_no   String    @unique
+  model      String?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  trips      trips[]
+}
+
+enum user_role {
+  admin
+  driver
+  director
+}

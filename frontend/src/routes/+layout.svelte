@@ -98,3 +98,9 @@
   </footer>
 
 </section>
+
+<style>
+  footer {
+    box-shadow: 0 -4px 8px -1px rgba(0, 0, 0, 0.1); /* Top shadow */
+  }
+</style>

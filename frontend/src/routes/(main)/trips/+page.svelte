@@ -1,5 +1,19 @@
 <script lang="ts">
   import date from 'date-and-time' 
+	import type { PageData } from './$types';
+  import type { trips } from '$generated/prisma';
+
+  interface Props {
+    data: {
+      trips: trips[]
+    } | PageData
+  }
+
+  let {
+    data
+  }: Props = $props()
+
+  $inspect(data)
 
 
   let now = new Date()
