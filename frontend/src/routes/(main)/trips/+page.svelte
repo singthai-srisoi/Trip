@@ -1,11 +1,18 @@
 <script lang="ts">
   import date from 'date-and-time' 
 	import type { PageData } from './$types';
-  import type { trips } from '$generated/prisma';
+  import type { destinations, trips, vehicles } from '$generated/prisma';
+	import TripCard from '$lib/components/TripCard.svelte';
 
+  interface trips_model extends trips {
+    vehicles: vehicles
+    destinations_trips_end_destination_idTodestinations: destinations
+    destinations_trips_start_destination_idTodestinations: destinations
+  }
   interface Props {
     data: {
-      trips: trips[]
+      vehicles: string[]
+      trips: Map<string, trips_model[]>
     } | PageData
   }
 
@@ -50,15 +57,65 @@
     <input type="search" class="grow" placeholder="Search" list="vehicle" />
   </label>
   <datalist id="vehicle">
-    <option value="WY098"></option>
+    <!-- <option value="WY098"></option>
     <option value="JHKFDS980"></option>
     <option value="SDJF(*)("></option>
     <option value="sdf*&)*"></option>
-    <option value="OHOI293846"></option>
+    <option value="OHOI293846"></option> -->
+    {#each data.vehicles as vehicle}
+      <option value={vehicle}></option>
+    {/each}
   </datalist>
   <!-- the list -->
   <div class={"flex flex-col gap-2"}>
-    <div class="card bg-base-200 border border-base-300 card-sm">
+
+    {#each data.trips as trip }
+      <TripCard {trip} />
+      <!-- <div class="card bg-base-200 border border-base-300 card-sm">
+        <div class="card-body">
+          <h2 class="card-title">
+            {trip[0]}
+            {#if (trip[1][0] && trip[1][0].is_checked == true && trip[1][0].is_verified==true) &&
+              (trip[1][1] && trip[1][1].is_checked == true && trip[1][1].is_verified==true)
+            }
+              <div aria-label="status" class="status status-success"></div>
+            {:else}
+              <div aria-label="warning" class="status status-warning"></div>
+            {/if}
+          </h2>
+          {#each trip[1] as t, i}
+          <div class={"flex justify-between items-center gap-2"}>
+            <p class={"font-bold"}>Trip {i+1}: {t.created_at ? date.format(t.created_at, "DD MMM HH:mm") : ''}</p>
+            <a href={`/trips/${t.id}`} class={"btn btn-xs btn-soft btn-accent"}>view</a>
+          </div>
+            <ul class="steps">
+              <li class="step step-info">
+                <div class="tooltip tooltip-primary" data-tip="hello">
+                  {t.destinations_trips_start_destination_idTodestinations.name}
+                </div>
+              </li>
+              <li class="step step-info">
+                <div class="tooltip tooltip-primary" data-tip="hello">
+                  {t.destinations_trips_end_destination_idTodestinations.name}
+                </div>
+              </li>
+            </ul>
+            {#if trip[1].length > 1 && i < trip[1].length-1}
+              <div class="divider my-1"></div>
+            {/if}
+            
+          {/each} -->
+          
+          <!-- <div class="justify-end card-actions">
+            <button class="btn btn-primary">View</button>
+          </div>
+        </div>
+      </div> -->
+      
+    {/each}
+
+    <!-- trip card start -->
+    <!-- <div class="card bg-base-200 border border-base-300 card-sm">
       <div class="card-body">
         <h2 class="card-title">WUY4618 <div aria-label="status" class="status status-success"></div></h2>
         <p>trip 1</p>
@@ -75,56 +132,8 @@
           <button class="btn btn-primary">View</button>
         </div>
       </div>
-    </div>
-
-    <div class="card bg-base-200 border border-base-300 card-sm">
-      <div class="card-body">
-        <h2 class="card-title">WUY4618 <div aria-label="status" class="status status-success"></div></h2>
-        <p>trip 1</p>
-        <ul class="steps">
-          <li class="step step-info">
-            <div class="tooltip tooltip-primary" data-tip="hello">
-              <span>MPOB</span>
-            </div>
-              
-          </li>
-          <li class="step">Benta Sawit</li>
-        </ul>
-        <p>trip 2</p>
-        <ul class="steps">
-          <li class="step step-secondary">
-            <div class="tooltip tooltip-secondary" data-tip="hello">
-              <span>MPOB</span>
-            </div>
-              
-          </li>
-          <li class="step">Benta Sawit</li>
-        </ul>
-        
-        <div class="justify-end card-actions">
-          <button class="btn btn-primary">View</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card bg-base-200 border border-base-300 card-sm">
-      <div class="card-body">
-        <h2 class="card-title">WUY4618 <div aria-label="status" class="status status-success"></div></h2>
-        <ul class="steps">
-          <li class="step step-info">
-            <div class="tooltip tooltip-primary" data-tip="hello">
-              <span>MPOB</span>
-            </div>
-              
-          </li>
-          <li class="step">Benta Sawit</li>
-        </ul>
-        <div class="justify-end card-actions">
-          <button class="btn btn-primary">View</button>
-        </div>
-      </div>
-    </div>
-
+    </div> -->
+    <!-- trip card end -->
   </div>
 </section>
 <section class="completed-trip">
