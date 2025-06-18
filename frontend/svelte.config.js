@@ -6,7 +6,8 @@ const config = {
 	kit: { 
 		adapter: adapter(),
 		alias: {
-			"$generated": "src/generated"
+			"$generated": "src/generated",
+			"@/*": "./path/to/lib/*",
 		}
 	}
 };

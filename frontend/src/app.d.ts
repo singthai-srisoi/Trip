@@ -7,6 +7,10 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
+		interface ComboOption {
+			label: string
+			value: string
+		}
 	}
 	namespace Model {
 		interface TimeStamp {
