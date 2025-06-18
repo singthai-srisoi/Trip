@@ -1,62 +1,19 @@
-import type { JSONSchema } from 'sveltekit-superforms';
+import { z } from 'zod'
 
-export const schema = {
-    "type": "object",
-    "properties": {
-    "vehicle_id": {
-      "type": "integer"
-    },
-    "driver_id": {
-      "type": ["integer", "null"]
-    },
-    "date": {
-      "type": "string",
-      "format": "date"
-    },
-    "trip_number": {
-      "type": "integer",
-      "enum": [1, 2, 3]
-    },
-    "is_gantung": {
-      "type": "boolean",
-      "default": false
-    },
-    "start_destination_id": {
-      "type": "integer"
-    },
-    "end_destination_id": {
-      "type": "integer"
-    },
-    "is_checked": {
-      "type": "boolean",
-      "default": false
-    },
-    "is_verified": {
-      "type": "boolean",
-      "default": false
-    },
-    "is_double_checked": {
-      "type": "boolean",
-      "default": false
-    },
-    "is_incomplete": {
-      "type": "boolean",
-      "default": false
-    },
-    "remark": {
-      "type": ["string", "null"],
-      "maxLength": 1000
-    },
-    "created_by": {
-      "type": ["integer", "null"]
-    }
-  },
-  "required": [
-    "vehicle_id",
-    "date",
-    "trip_number",
-    "start_destination_id",
-    "end_destination_id"
-  ],
-  "additionalProperties": false
-} as const satisfies JSONSchema
+export const tripSchema = z.object({
+  vehicle_id: z.coerce.number().min(1),
+  driver_id: z.coerce.number().min(1),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
+  trip_number: z.number().int().min(1).max(3),
+  start_destination_id: z.coerce.number().min(1),
+  end_destination_id: z.coerce.number().min(1),
+  remark: z.string().optional(),
+  is_gantung: z.boolean().optional(),
+  is_checked: z.boolean().optional(),
+  is_verified: z.boolean().optional(),
+  is_double_checked: z.boolean().optional(),
+  is_incomplete: z.boolean().optional(),
+  created_by: z.coerce.number().optional(),
+})
+
+export type TripSchema = z.infer<typeof tripSchema>
