@@ -8,7 +8,9 @@
     import { cn } from "$lib/utils.js";
 
     interface Props {
-        placeholder: string
+        placeholder?: string
+        label?: string
+        error?: string[]
         items: {
             value: any,
             label: any,
@@ -17,7 +19,9 @@
     }
 
     let {
+        label = "",
         placeholder = "",
+        error,
         items,
         value = $bindable("")
     }: Props = $props()
@@ -41,9 +45,13 @@
 <Popover.Root bind:open>
     <Popover.Trigger bind:ref={triggerRef}>
     {#snippet child({ props })}
+    <label class="floating-label">
+        <span>{label}</span>
         <Button
             {...props}
-            class="w-full input outline-0 justify-between rounded-xs border border-base-300"
+            class={error ? "w-full input input-error outline-0 justify-between rounded-xs border"
+                : "w-full input outline-0 justify-between rounded-xs border border-base-300"
+            }
             role="combobox"
             aria-expanded={open}
         >
@@ -54,6 +62,10 @@
             {/if}
             <ChevronsUpDownIcon class="opacity-50" />
         </Button>
+    </label>
+    {#if error}
+        <span class="text-red-600">{error[0]}</span>
+    {/if}
     {/snippet}
     </Popover.Trigger>
     <Popover.Content class="w-full p-0">

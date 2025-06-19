@@ -3,7 +3,8 @@ import { superValidate } from 'sveltekit-superforms';
 import { schemasafe, zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from "./$types";
 import { tripSchema } from '$lib/schema/TripSchema';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
+import type { trips } from '$generated/prisma';
 
 export let load: PageServerLoad = async () => {
     let vehicles = await prisma.vehicles.findMany()
@@ -25,17 +26,18 @@ export let load: PageServerLoad = async () => {
 
 export let actions = {
     create: async ({ request }) => {
-        // let form = await request.formData()
-        // const adapter = schemasafe(zod(tripSchema));
         const form = await superValidate(request, zod(tripSchema))
-
         if (!form.valid) {
-            // Return { form } and things will just work.
-            return fail(400, { form });
+            return fail(400, { form })
         }
-
-        console.log('create')
-        return { success: true }
+        form.data.created_by = 1
+        let res = await prisma.trips.create({
+            data: form.data
+        })
+        if (!res) {
+            return fail(500, { form, message: 'Failed to create trip' })
+        }
+        return redirect(303, `/trips/${res.id}`)
     
     }
 } satisfies Actions

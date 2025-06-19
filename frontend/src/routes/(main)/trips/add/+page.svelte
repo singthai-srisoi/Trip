@@ -63,8 +63,6 @@
       updated_at: new Date(),
     })
 
-    $inspect(form)
-
     async function handleSubmit(event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) {
       event.preventDefault();
       const data = new FormData()
@@ -113,6 +111,7 @@
     {vehicle_option}
     {driver_option}
     {destination_option}
+    {form}
     bind:trip
   />
 </form>

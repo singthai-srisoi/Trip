@@ -27,7 +27,7 @@
   {#key data.currentPath}
   {#await Promise.resolve(getPageTransition(data.previousPath ?? '', data.currentPath)) then tr}
     <main
-      class="p-6 lg:p-25 md:p-10 mt-3"
+      class="p-6 lg:p-25 md:p-10 mt-3 relative"
       in:tr.transition={tr.params}
     >
       {@render children()}
