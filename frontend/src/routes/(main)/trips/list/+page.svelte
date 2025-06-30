@@ -3,33 +3,21 @@
 </svelte:head>
 
 <script lang="ts">
-
-	// import "cally";
-    import date from "date-and-time";
+  import date from "date-and-time"
 	import type { PageData } from "./$types";
-	import { onMount } from "svelte";
-
     interface Props {
-        data: {
-        } | PageData
+        data: PageData
     }
 
     let {
+      data
     }: Props = $props()
 
-    onMount(async () => {
-        const cally = await import('cally')
-    })
+    let format = (date_: Date) => {
+        return date_ ? date.format(date_, "YYYY-MM-DD") : ""
+    }
 
-    let today = date.format(
-        new Date,
-        "YYYY-MM-DD"
-    )
-    let trip = $state({
-        from: '',
-        to: '',
-        date: today,
-    })
+    $inspect(data, 'data')
 </script>
 
 
@@ -46,42 +34,43 @@
 </div>
 
 <div class="overflow-x-auto rounded-sm border border-base-content/5 bg-base-100">
-  <table class="table table-zebra">
+  <table class="table table-xs">
     <!-- head -->
     <thead>
       <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
+        <th>Date</th>
+        <th>Lorry</th>
+        <th>Trip</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <!-- row 1 -->
-      <tr>
-        <th>1</th>
-        <td>Cy Ganderton</td>
-        <td><ul class="steps">
-  <li class="step step-primary">Register</li>
-  <li class="step step-primary">Choose plan</li>
-</ul>
-</td>
-        <td>Blue</td>
-      </tr>
-      <!-- row 2 -->
-      <tr>
-        <th>2</th>
-        <td>Hart Hagerty</td>
-        <td>Desktop Support Technician</td>
-        <td>Purple</td>
-      </tr>
-      <!-- row 3 -->
-      <tr>
-        <th>3</th>
-        <td>Brice Swyre</td>
-        <td>Tax Accountant</td>
-        <td>Red</td>
-      </tr>
+
+      {#each data.trips as group}
+        {#each group.trips as trip, i}
+          <tr>
+            {#if i === 0}
+              <th rowspan={group.trips.length} class="align-top">{format(group.date)}</th>
+              <th rowspan={group.trips.length} class="align-top">{group.plate_no}</th>
+            {/if}
+            <td class="align-top">
+              <div class="breadcrumbs text-xs p-0 align-top">
+                <ul>
+                  <li>{trip.destinations_trips_start_destination_idTodestinations?.name}</li>
+                  <li>{trip.destinations_trips_end_destination_idTodestinations?.name}</li>
+                </ul>
+              </div>
+            </td>
+            <td>
+              <a href={`/trips/${trip.id}/edit`} class="btn btn-xs btn-outline">Edit</a>
+            </td>
+          </tr>
+        {/each}
+      {/each}
+
+
+
+      
     </tbody>
   </table>
 </div>
