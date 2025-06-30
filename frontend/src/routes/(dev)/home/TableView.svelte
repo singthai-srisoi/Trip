@@ -11,7 +11,6 @@
         data
     }: Props = $props()
 
-    $inspect(data)
 </script>
 
 <div class="overflow-x-auto">

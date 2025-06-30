@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Prisma } from "$generated/prisma";
-	import type { PageData } from "./$types";
     import date from "date-and-time";
 
     type trips_model = Prisma.tripsGetPayload<{
@@ -14,14 +13,12 @@
     interface Props {
         data: {
             trips: trips_model
-        } | PageData
+        }
     }
 
     let {
         data
     }: Props = $props()
-
-    $inspect(data)
 </script>
 
 <svelte:head>

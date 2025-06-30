@@ -24,7 +24,6 @@
         trip.date instanceof Date ? date.format(trip.date, 'YYYY-MM-DD') : ''
     )
 
-    $inspect(trip)
 </script>
 
 <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4 flex flex-col gap-3">

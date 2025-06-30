@@ -13,7 +13,6 @@
         data
     }: Props = $props()
 
-    $inspect(data)
     let editing = $state(0)
 
     let action_modal: HTMLDialogElement

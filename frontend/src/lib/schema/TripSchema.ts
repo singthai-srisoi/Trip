@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const tripSchema = z.object({
+export const tripSchemaCreate = z.object({
   vehicle_id: z.coerce.number().min(1, 'Select a valid vehicle'),
   driver_id: z.coerce.number().min(1, 'Select a valid driver'),
   date: z.coerce.date(),
@@ -15,6 +15,10 @@ export const tripSchema = z.object({
   is_double_checked: z.boolean().optional(),
   is_incomplete: z.boolean().optional(),
   created_by: z.coerce.number().optional(),
+})
+
+export const tripSchema = tripSchemaCreate.extend({
+  id: z.coerce.number().optional(),
 })
 
 export type TripSchema = z.infer<typeof tripSchema>

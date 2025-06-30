@@ -41,7 +41,7 @@
         {#each trip[1] as t, i}
             <div class={"flex justify-between items-center gap-2"}>
                 <p class={"font-bold"}>Trip {i < 2 ? i+1 : 'Gantung'}: {t.created_at ? date.format(t.created_at, "DD MMM HH:mm") : ''}</p>
-                <a href={`/trips/${t.id}`} class={"btn btn-xs btn-soft btn-accent"}>view</a>
+                <a href={`/trips/${t.id}/chat`} class={"btn btn-xs btn-soft btn-accent"}>view</a>
             </div>
             <ul class="steps">
                 <li class={`step step-info ${get_step_color(t.is_checked, t.is_verified, t.is_gantung)}`}>

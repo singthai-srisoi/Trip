@@ -20,8 +20,6 @@
     data
   }: Props = $props()
 
-  $inspect(data)
-
 
   let now = new Date()
   let dt = date.format(now, "DD MMM, dddd")
@@ -143,7 +141,7 @@
   <div class={"flex flex-col gap-2"}>
     <div class="collapse collapse-plus bg-base-200 border border-base-300">
     <input type="checkbox" name="my-accordion-3" checked={false} />
-    <div class="collapse-title font-semibold">How do I create an account?</div>
+    <div class="collapse-title font-semibold dark:text-white">How do I create an account?</div>
     <div class="collapse-content text-sm">Click the "Sign Up" button in the top right corner and follow the registration process.</div>
   </div>
   <div class="collapse collapse-plus bg-base-200 border border-base-300">

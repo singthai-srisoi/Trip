@@ -1,7 +1,7 @@
 <script lang="ts">
     import CheckIcon from "@lucide/svelte/icons/check";
     import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
-    import { tick } from "svelte";
+    import { onMount, tick } from "svelte";
     import * as Command from "$lib/components/ui/command/index.js";
     import * as Popover from "$lib/components/ui/popover/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
@@ -23,14 +23,21 @@
         placeholder = "",
         error,
         items,
-        value = $bindable("")
+        value = $bindable()
     }: Props = $props()
 
     let open = $state(false);
     let triggerRef = $state<HTMLButtonElement>(null!);
-    const selectedValue = $derived(
-        items.find((f) => f.value === value)?.label
-    );
+    // const selectedValue = $derived(
+    //     items.find((f) => f.value === value)?.label
+    // );
+
+    let selectedValue: any = $state("")
+    $effect(() => {
+        const item = items.find((f) => f.value == value)
+        selectedValue = item ? item.label : ""
+    });
+
     // We want to refocus the trigger button when the user selects
     // an item from the list so users can continue navigating the
     // rest of the form with the keyboard.

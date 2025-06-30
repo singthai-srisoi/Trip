@@ -22,7 +22,7 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "C:\\Users\\dnb_t\\Documents\\dnb\\Trip\\frontend\\src\\generated\\prisma",
+      "value": "C:\\Users\\singt\\Documents\\GitHub\\Trip\\frontend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -36,7 +36,7 @@ const config: runtime.GetPrismaClientConfig = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\dnb_t\\Documents\\dnb\\Trip\\frontend\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\singt\\Documents\\GitHub\\Trip\\frontend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativePath": "../../../prisma",
@@ -46,7 +46,6 @@ const config: runtime.GetPrismaClientConfig = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
