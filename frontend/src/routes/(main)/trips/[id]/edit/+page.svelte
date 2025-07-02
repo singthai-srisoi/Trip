@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>add</title>
+    <title>edit</title>
 </svelte:head>
 
 <script lang="ts">
