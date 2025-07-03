@@ -16,8 +16,6 @@
     let format = (date_: Date) => {
         return date_ ? date.format(date_, "YYYY-MM-DD") : ""
     }
-
-    $inspect(data, 'data')
 </script>
 
 

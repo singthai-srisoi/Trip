@@ -1,22 +1,39 @@
+<svelte:head>
+    <title>edit</title>
+</svelte:head>
+
 <script lang="ts">
+	import type { PageData } from "./$types";
+	import { onMount } from "svelte";
+	import type { users } from "$generated/prisma";
+	import type { ActionResult } from '@sveltejs/kit';
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import type { users } from '$generated/prisma';
 	import { user_role } from '$generated/prisma/enums';
-	import DriverForm from "$lib/components/forms/DriverForm.svelte";
-	import type { ActionResult } from '@sveltejs/kit';
+	import DriverForm from '$lib/components/forms/DriverForm.svelte';
+	import UserForm from "$lib/components/forms/UserForm.svelte";
+
 
     interface Props {
+        data: {
+          driver: users
+        } | PageData
         form: FormData
     }
 
     let {
-        form
+      data,
+      form
     }: Props = $props()
 
 
+    onMount(async () => {
+        const cally = await import('cally')
+    })
 
-    let user: users = $state({
+
+
+    let user: users = $state(data.driver ?? {
         id: 0,
         role: user_role.driver,
         name: '',
@@ -48,20 +65,18 @@
       applyAction(result);
     }
 </script>
-<svelte:head>
-    <title>drivers</title>
-</svelte:head>
 
 <div class="breadcrumbs text-sm">
   <ul>
-    <li><a href="/drivers">Drivers</a></li>
-    <li>Add</li>
+    <li><a href="/users">Users</a></li>
+    <li>Edit</li>
   </ul>
 </div>
 
-<form action="?/create" method="POST" {onsubmit}>
-    <DriverForm 
-        bind:user
-        {form}
-    />
+<!-- Form Start -->
+<form action="?/edit" method="post" {onsubmit}>
+  <UserForm
+    {form}
+    bind:user
+  />
 </form>

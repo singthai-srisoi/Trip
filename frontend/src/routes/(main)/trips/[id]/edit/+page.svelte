@@ -92,8 +92,6 @@
 
       applyAction(result);
     }
-
-    $inspect(trip)
 </script>
 
 <div class="breadcrumbs text-sm">

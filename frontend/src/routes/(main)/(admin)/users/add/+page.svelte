@@ -3,7 +3,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import type { users } from '$generated/prisma';
 	import { user_role } from '$generated/prisma/enums';
-	import DriverForm from "$lib/components/forms/DriverForm.svelte";
+	import UserForm from '$lib/components/forms/UserForm.svelte';
 	import type { ActionResult } from '@sveltejs/kit';
 
     interface Props {
@@ -15,7 +15,6 @@
     }: Props = $props()
 
 
-
     let user: users = $state({
         id: 0,
         role: user_role.driver,
@@ -23,6 +22,7 @@
         created_at: null,
         phone: '',
     })
+    
 
     async function onsubmit(event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) {
       event.preventDefault();
@@ -54,13 +54,13 @@
 
 <div class="breadcrumbs text-sm">
   <ul>
-    <li><a href="/drivers">Drivers</a></li>
+    <li><a href="/users">Users</a></li>
     <li>Add</li>
   </ul>
 </div>
 
 <form action="?/create" method="POST" {onsubmit}>
-    <DriverForm 
+    <UserForm 
         bind:user
         {form}
     />
