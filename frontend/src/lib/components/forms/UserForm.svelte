@@ -51,7 +51,7 @@
         <label class="floating-label">
                 <span>Phone</span>
                 <input type="text" placeholder="Phone" 
-                    class={form?.form?.errors?.name ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
+                    class={form?.form?.errors?.phone ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
                     bind:value={user.phone}  
                 />
             </label>

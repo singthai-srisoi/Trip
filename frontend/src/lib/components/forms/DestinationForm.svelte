@@ -1,16 +1,13 @@
 <script lang="ts">
-	import type { users } from '$generated/prisma';
-    import date from 'date-and-time';
-	import CustomeSvg from '../CustomeSVG.svelte';
-	import ComboBox from '../ComboBox.svelte';
+	import type { destinations } from '$generated/prisma';
 
     interface Props {
-        user: users
+        destination: destinations
         form: {[k:string]:any}
     }
 
     let {
-        user = $bindable(),
+        destination = $bindable(),
         form
     }: Props = $props()
 
@@ -26,17 +23,17 @@
                 <span>Name</span>
                 <input type="text" placeholder="Name" 
                     class={form?.form?.errors?.name ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
-                    bind:value={user.name}  
+                    bind:value={destination.name}  
                 />
             </label>
     </div>
 
     <div class="w-full">
         <label class="floating-label">
-                <span>Phone</span>
-                <input type="text" placeholder="Phone" 
-                    class={form?.form?.errors?.phone ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
-                    bind:value={user.phone}  
+                <span>Address</span>
+                <input type="text" placeholder="Address" 
+                    class={form?.form?.errors?.address ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
+                    bind:value={destination.address}  
                 />
             </label>
     </div>

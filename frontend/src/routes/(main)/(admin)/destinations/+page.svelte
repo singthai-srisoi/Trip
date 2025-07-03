@@ -1,10 +1,13 @@
 <script lang="ts">
-	import type { users } from '$generated/prisma';
+	import type { destinations } from '$generated/prisma';
 	import type { PageData } from './$types';
 
     interface Props {
         data: PageData
-        form: FormData
+        form: { 
+          success?: boolean
+          message?: string
+        }
     }
 
     let {
@@ -13,19 +16,47 @@
     }: Props = $props();
 
     let showModal = $state(false);
-    let deleteUser: users | null = $state(null);
+    let deleteDestination: destinations | null = $state(null);
 
+    $inspect(form)
+    let alert: HTMLDivElement | null = $state(null)
 
 </script>
 <svelte:head>
-    <title>drivers</title>
+    <title>destinations</title>
 </svelte:head>
 
 <div class={"mb-6 w-full md:flex items-baseline justify-between"}>
   <div class="flex gap-2">
-    <a class="btn btn-ghost btn-sm bg-base-300" href="/users/add">Add</a>
+    <a class="btn btn-ghost btn-sm bg-base-300" href="/destinations/add">Add</a>
   </div>
 </div>
+
+{#if form?.success !== undefined}
+<div role="alert" class="alert overflow-auto" bind:this={alert}
+  class:alert-success={form.success}
+  class:alert-error={!form.success}
+
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  <span>{form.message}</span>
+  <div>
+    <button class="btn btn-sm"
+    class:btn-success={form.success}
+  class:btn-error={!form.success}
+      type="button"
+     onclick={() => {
+        if (alert) {
+          alert.remove();
+        }
+     }}
+    >OK</button>
+  </div>
+</div>
+  
+{/if}
 
 
 
@@ -35,21 +66,21 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Phone</th>
+        <th>Address</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-        {#each data.drivers as driver (driver.id)}
+        {#each data.destinations as destination (destination.id)}
             <tr>
-                <th>{driver.name}</th>
-                <td>{driver.phone == 'null' || driver.phone == null ? '' : driver.phone}</td>
+                <th>{destination.name}</th>
+                <td>{destination.address == 'null' || destination.address == null ? '' : destination.address}</td>
                 <td class="join">
-                    <a href={`/drivers/${driver.id}`} class="btn btn-xs btn-outline join-item">Edit</a>
+                    <a href={`/destinations/${destination.id}`} class="btn btn-xs btn-outline join-item">Edit</a>
                     <button type="button" class="btn btn-xs btn-outline join-item"
                       onclick={() => {
                         showModal = true;
-                        deleteUser = driver;
+                        deleteDestination = destination;
                       }}
                     >Delete</button>
                 </td>
@@ -83,11 +114,11 @@
 {#if showModal}
 <dialog id="my_modal_1" class="modal p-0" open>
   <div class="modal-box">
-    <h3 class="text-lg font-bold">Are you sure you want to delete: {deleteUser?.name}</h3>
+    <h3 class="text-lg font-bold">Are you sure you want to delete: {deleteDestination?.name}</h3>
     <div class="modal-action">
 
       <form action="?/delete" method="post">
-        <input type="hidden" name="id" value={deleteUser?.id} />
+        <input type="hidden" name="id" value={deleteDestination?.id} />
         <button class="btn btn-error"
             type="submit"
           >Delete</button>
@@ -97,7 +128,7 @@
         <button class="btn btn-warning"
           onclick={() => {
             showModal = false;
-            deleteUser = null;
+            deleteDestination = null;
           }}
         >Close</button>
       </form>

@@ -11,7 +11,7 @@
     }: Props = $props()
 </script>
 
-<div role="tablist" class="tabs tabs-border mb-6">
+<div role="tablist" class="tabs tabs-border tabs-xs mb-6">
   <a role="tab" class="tab" href="/drivers"
   class:tab-active={page.route.id?.includes('/drivers')}>
   Drivers</a>
@@ -22,6 +22,10 @@
   <a role="tab" class="tab" href="/vehicles"
     class:tab-active={page.route.id?.includes('/vehicles')}>
         Vehicles
+    </a>
+    <a role="tab" class="tab" href="/destinations"
+    class:tab-active={page.route.id?.includes('/destinations')}>
+        Destinations
     </a>
 </div>
 {@render children()}

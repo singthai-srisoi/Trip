@@ -36,6 +36,7 @@
       <tr>
         <th>Name</th>
         <th>Phone</th>
+        <th>Type</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -44,6 +45,7 @@
             <tr>
                 <th>{user.name}</th>
                 <td>{user.phone == 'null' || user.phone == null ? '' : user.phone}</td>
+                <td>{user.role}</td>
                 <td class="join">
                     <a href={`/users/${user.id}`} class="btn btn-xs btn-outline join-item">Edit</a>
                     <button type="button" class="btn btn-xs btn-outline join-item"
