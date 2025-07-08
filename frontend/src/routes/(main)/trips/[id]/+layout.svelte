@@ -41,8 +41,8 @@
           {:else}
             <li>Trip {data.trips?.trip_number}</li>
           {/if}
-          <li>{data.trips?.destinations_trips_end_destination_idTodestinations?.name}</li>
           <li>{data.trips?.destinations_trips_start_destination_idTodestinations?.name}</li>
+          <li>{data.trips?.destinations_trips_end_destination_idTodestinations?.name}</li>
         </ul>
       </div>
     </div>

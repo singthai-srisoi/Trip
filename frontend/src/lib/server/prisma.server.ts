@@ -4,6 +4,7 @@ import { withAccelerate } from '@prisma/extension-accelerate';
 
 const prisma = new PrismaClient({
 	datasourceUrl: DATABASE_URL
-}).$extends(withAccelerate());
+}).$extends(withAccelerate())
+
 
 export default prisma;

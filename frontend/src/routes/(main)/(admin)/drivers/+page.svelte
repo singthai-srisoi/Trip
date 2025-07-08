@@ -23,7 +23,7 @@
 
 <div class={"mb-6 w-full md:flex items-baseline justify-between"}>
   <div class="flex gap-2">
-    <a class="btn btn-ghost btn-sm bg-base-300" href="/users/add">Add</a>
+    <a class="btn btn-ghost btn-sm bg-base-300" href="/drivers/add">Add</a>
   </div>
 </div>
 

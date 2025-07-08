@@ -52,7 +52,7 @@
 
 <div class="breadcrumbs text-sm">
   <ul>
-    <li><a href="/destinarions">Destinations</a></li>
+    <li><a href="/destinations">Destinations</a></li>
     <li>Add</li>
   </ul>
 </div>

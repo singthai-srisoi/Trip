@@ -1,4 +1,5 @@
 import prisma from "$lib/server/prisma.server";
+import { includes } from "zod/v4";
 import type { LayoutServerLoad } from "./$types";
 
 
@@ -14,10 +15,15 @@ export let load: LayoutServerLoad = async ({ params }) => {
             destinations_trips_end_destination_idTodestinations: true,
             destinations_trips_start_destination_idTodestinations: true,
             users_trips_driver_idTousers: true,
-            trip_chats: true,
+            trip_chats: {
+                include: {
+                    users: true
+                }
+            }
         }
     })
     return {
+        id,
         trips
     }
 }
