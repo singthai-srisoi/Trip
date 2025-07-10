@@ -92,3 +92,19 @@ CREATE TRIGGER trip_limit_trigger
 BEFORE INSERT ON trips
 FOR EACH ROW
 EXECUTE FUNCTION enforce_trip_limits();
+
+-- Step 1: Add fields to existing users table
+ALTER TABLE users
+ADD COLUMN username TEXT UNIQUE,
+ADD COLUMN email TEXT UNIQUE,
+ADD COLUMN hashed_password TEXT;
+
+-- Step 2: Create sessions table for Lucia
+CREATE TABLE session (
+    id TEXT PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    expires_at TIMESTAMPTZ NOT NULL
+);
+
+-- Optional Index for session expiration (recommended for cleanup jobs)
+CREATE INDEX idx_session_expires_at ON session (expires_at);

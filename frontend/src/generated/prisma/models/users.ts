@@ -39,6 +39,9 @@ export type UsersMinAggregateOutputType = {
   role: $Enums.user_role | null
   phone: string | null
   created_at: Date | null
+  username: string | null
+  email: string | null
+  hashed_password: string | null
 }
 
 export type UsersMaxAggregateOutputType = {
@@ -47,6 +50,9 @@ export type UsersMaxAggregateOutputType = {
   role: $Enums.user_role | null
   phone: string | null
   created_at: Date | null
+  username: string | null
+  email: string | null
+  hashed_password: string | null
 }
 
 export type UsersCountAggregateOutputType = {
@@ -55,6 +61,9 @@ export type UsersCountAggregateOutputType = {
   role: number
   phone: number
   created_at: number
+  username: number
+  email: number
+  hashed_password: number
   _all: number
 }
 
@@ -73,6 +82,9 @@ export type UsersMinAggregateInputType = {
   role?: true
   phone?: true
   created_at?: true
+  username?: true
+  email?: true
+  hashed_password?: true
 }
 
 export type UsersMaxAggregateInputType = {
@@ -81,6 +93,9 @@ export type UsersMaxAggregateInputType = {
   role?: true
   phone?: true
   created_at?: true
+  username?: true
+  email?: true
+  hashed_password?: true
 }
 
 export type UsersCountAggregateInputType = {
@@ -89,6 +104,9 @@ export type UsersCountAggregateInputType = {
   role?: true
   phone?: true
   created_at?: true
+  username?: true
+  email?: true
+  hashed_password?: true
   _all?: true
 }
 
@@ -184,6 +202,9 @@ export type UsersGroupByOutputType = {
   role: $Enums.user_role
   phone: string | null
   created_at: Date | null
+  username: string | null
+  email: string | null
+  hashed_password: string | null
   _count: UsersCountAggregateOutputType | null
   _avg: UsersAvgAggregateOutputType | null
   _sum: UsersSumAggregateOutputType | null
@@ -215,6 +236,10 @@ export type usersWhereInput = {
   role?: Prisma.Enumuser_roleFilter<"users"> | $Enums.user_role
   phone?: Prisma.StringNullableFilter<"users"> | string | null
   created_at?: Prisma.DateTimeNullableFilter<"users"> | Date | string | null
+  username?: Prisma.StringNullableFilter<"users"> | string | null
+  email?: Prisma.StringNullableFilter<"users"> | string | null
+  hashed_password?: Prisma.StringNullableFilter<"users"> | string | null
+  session?: Prisma.SessionListRelationFilter
   trip_chats?: Prisma.Trip_chatsListRelationFilter
   trips_trips_created_byTousers?: Prisma.TripsListRelationFilter
   trips_trips_driver_idTousers?: Prisma.TripsListRelationFilter
@@ -226,6 +251,10 @@ export type usersOrderByWithRelationInput = {
   role?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  username?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  hashed_password?: Prisma.SortOrderInput | Prisma.SortOrder
+  session?: Prisma.sessionOrderByRelationAggregateInput
   trip_chats?: Prisma.trip_chatsOrderByRelationAggregateInput
   trips_trips_created_byTousers?: Prisma.tripsOrderByRelationAggregateInput
   trips_trips_driver_idTousers?: Prisma.tripsOrderByRelationAggregateInput
@@ -233,6 +262,8 @@ export type usersOrderByWithRelationInput = {
 
 export type usersWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  username?: string
+  email?: string
   AND?: Prisma.usersWhereInput | Prisma.usersWhereInput[]
   OR?: Prisma.usersWhereInput[]
   NOT?: Prisma.usersWhereInput | Prisma.usersWhereInput[]
@@ -240,10 +271,12 @@ export type usersWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.Enumuser_roleFilter<"users"> | $Enums.user_role
   phone?: Prisma.StringNullableFilter<"users"> | string | null
   created_at?: Prisma.DateTimeNullableFilter<"users"> | Date | string | null
+  hashed_password?: Prisma.StringNullableFilter<"users"> | string | null
+  session?: Prisma.SessionListRelationFilter
   trip_chats?: Prisma.Trip_chatsListRelationFilter
   trips_trips_created_byTousers?: Prisma.TripsListRelationFilter
   trips_trips_driver_idTousers?: Prisma.TripsListRelationFilter
-}, "id">
+}, "id" | "username" | "email">
 
 export type usersOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -251,6 +284,9 @@ export type usersOrderByWithAggregationInput = {
   role?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  username?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  hashed_password?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.usersCountOrderByAggregateInput
   _avg?: Prisma.usersAvgOrderByAggregateInput
   _max?: Prisma.usersMaxOrderByAggregateInput
@@ -267,6 +303,9 @@ export type usersScalarWhereWithAggregatesInput = {
   role?: Prisma.Enumuser_roleWithAggregatesFilter<"users"> | $Enums.user_role
   phone?: Prisma.StringNullableWithAggregatesFilter<"users"> | string | null
   created_at?: Prisma.DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
+  username?: Prisma.StringNullableWithAggregatesFilter<"users"> | string | null
+  email?: Prisma.StringNullableWithAggregatesFilter<"users"> | string | null
+  hashed_password?: Prisma.StringNullableWithAggregatesFilter<"users"> | string | null
 }
 
 export type usersCreateInput = {
@@ -274,6 +313,10 @@ export type usersCreateInput = {
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  session?: Prisma.sessionCreateNestedManyWithoutUsersInput
   trip_chats?: Prisma.trip_chatsCreateNestedManyWithoutUsersInput
   trips_trips_created_byTousers?: Prisma.tripsCreateNestedManyWithoutUsers_trips_created_byTousersInput
   trips_trips_driver_idTousers?: Prisma.tripsCreateNestedManyWithoutUsers_trips_driver_idTousersInput
@@ -285,6 +328,10 @@ export type usersUncheckedCreateInput = {
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  session?: Prisma.sessionUncheckedCreateNestedManyWithoutUsersInput
   trip_chats?: Prisma.trip_chatsUncheckedCreateNestedManyWithoutUsersInput
   trips_trips_created_byTousers?: Prisma.tripsUncheckedCreateNestedManyWithoutUsers_trips_created_byTousersInput
   trips_trips_driver_idTousers?: Prisma.tripsUncheckedCreateNestedManyWithoutUsers_trips_driver_idTousersInput
@@ -295,6 +342,10 @@ export type usersUpdateInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session?: Prisma.sessionUpdateManyWithoutUsersNestedInput
   trip_chats?: Prisma.trip_chatsUpdateManyWithoutUsersNestedInput
   trips_trips_created_byTousers?: Prisma.tripsUpdateManyWithoutUsers_trips_created_byTousersNestedInput
   trips_trips_driver_idTousers?: Prisma.tripsUpdateManyWithoutUsers_trips_driver_idTousersNestedInput
@@ -306,6 +357,10 @@ export type usersUncheckedUpdateInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session?: Prisma.sessionUncheckedUpdateManyWithoutUsersNestedInput
   trip_chats?: Prisma.trip_chatsUncheckedUpdateManyWithoutUsersNestedInput
   trips_trips_created_byTousers?: Prisma.tripsUncheckedUpdateManyWithoutUsers_trips_created_byTousersNestedInput
   trips_trips_driver_idTousers?: Prisma.tripsUncheckedUpdateManyWithoutUsers_trips_driver_idTousersNestedInput
@@ -317,6 +372,9 @@ export type usersCreateManyInput = {
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
 }
 
 export type usersUpdateManyMutationInput = {
@@ -324,6 +382,9 @@ export type usersUpdateManyMutationInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type usersUncheckedUpdateManyInput = {
@@ -332,6 +393,9 @@ export type usersUncheckedUpdateManyInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UsersScalarRelationFilter = {
@@ -350,6 +414,9 @@ export type usersCountOrderByAggregateInput = {
   role?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  hashed_password?: Prisma.SortOrder
 }
 
 export type usersAvgOrderByAggregateInput = {
@@ -362,6 +429,9 @@ export type usersMaxOrderByAggregateInput = {
   role?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  hashed_password?: Prisma.SortOrder
 }
 
 export type usersMinOrderByAggregateInput = {
@@ -370,6 +440,9 @@ export type usersMinOrderByAggregateInput = {
   role?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  hashed_password?: Prisma.SortOrder
 }
 
 export type usersSumOrderByAggregateInput = {
@@ -426,11 +499,29 @@ export type Enumuser_roleFieldUpdateOperationsInput = {
   set?: $Enums.user_role
 }
 
+export type usersCreateNestedOneWithoutSessionInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutSessionInput, Prisma.usersUncheckedCreateWithoutSessionInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutSessionInput
+  connect?: Prisma.usersWhereUniqueInput
+}
+
+export type usersUpdateOneRequiredWithoutSessionNestedInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutSessionInput, Prisma.usersUncheckedCreateWithoutSessionInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutSessionInput
+  upsert?: Prisma.usersUpsertWithoutSessionInput
+  connect?: Prisma.usersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutSessionInput, Prisma.usersUpdateWithoutSessionInput>, Prisma.usersUncheckedUpdateWithoutSessionInput>
+}
+
 export type usersCreateWithoutTrip_chatsInput = {
   name: string
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  session?: Prisma.sessionCreateNestedManyWithoutUsersInput
   trips_trips_created_byTousers?: Prisma.tripsCreateNestedManyWithoutUsers_trips_created_byTousersInput
   trips_trips_driver_idTousers?: Prisma.tripsCreateNestedManyWithoutUsers_trips_driver_idTousersInput
 }
@@ -441,6 +532,10 @@ export type usersUncheckedCreateWithoutTrip_chatsInput = {
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  session?: Prisma.sessionUncheckedCreateNestedManyWithoutUsersInput
   trips_trips_created_byTousers?: Prisma.tripsUncheckedCreateNestedManyWithoutUsers_trips_created_byTousersInput
   trips_trips_driver_idTousers?: Prisma.tripsUncheckedCreateNestedManyWithoutUsers_trips_driver_idTousersInput
 }
@@ -466,6 +561,10 @@ export type usersUpdateWithoutTrip_chatsInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session?: Prisma.sessionUpdateManyWithoutUsersNestedInput
   trips_trips_created_byTousers?: Prisma.tripsUpdateManyWithoutUsers_trips_created_byTousersNestedInput
   trips_trips_driver_idTousers?: Prisma.tripsUpdateManyWithoutUsers_trips_driver_idTousersNestedInput
 }
@@ -476,6 +575,10 @@ export type usersUncheckedUpdateWithoutTrip_chatsInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session?: Prisma.sessionUncheckedUpdateManyWithoutUsersNestedInput
   trips_trips_created_byTousers?: Prisma.tripsUncheckedUpdateManyWithoutUsers_trips_created_byTousersNestedInput
   trips_trips_driver_idTousers?: Prisma.tripsUncheckedUpdateManyWithoutUsers_trips_driver_idTousersNestedInput
 }
@@ -485,6 +588,10 @@ export type usersCreateWithoutTrips_trips_created_byTousersInput = {
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  session?: Prisma.sessionCreateNestedManyWithoutUsersInput
   trip_chats?: Prisma.trip_chatsCreateNestedManyWithoutUsersInput
   trips_trips_driver_idTousers?: Prisma.tripsCreateNestedManyWithoutUsers_trips_driver_idTousersInput
 }
@@ -495,6 +602,10 @@ export type usersUncheckedCreateWithoutTrips_trips_created_byTousersInput = {
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  session?: Prisma.sessionUncheckedCreateNestedManyWithoutUsersInput
   trip_chats?: Prisma.trip_chatsUncheckedCreateNestedManyWithoutUsersInput
   trips_trips_driver_idTousers?: Prisma.tripsUncheckedCreateNestedManyWithoutUsers_trips_driver_idTousersInput
 }
@@ -509,6 +620,10 @@ export type usersCreateWithoutTrips_trips_driver_idTousersInput = {
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  session?: Prisma.sessionCreateNestedManyWithoutUsersInput
   trip_chats?: Prisma.trip_chatsCreateNestedManyWithoutUsersInput
   trips_trips_created_byTousers?: Prisma.tripsCreateNestedManyWithoutUsers_trips_created_byTousersInput
 }
@@ -519,6 +634,10 @@ export type usersUncheckedCreateWithoutTrips_trips_driver_idTousersInput = {
   role: $Enums.user_role
   phone?: string | null
   created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  session?: Prisma.sessionUncheckedCreateNestedManyWithoutUsersInput
   trip_chats?: Prisma.trip_chatsUncheckedCreateNestedManyWithoutUsersInput
   trips_trips_created_byTousers?: Prisma.tripsUncheckedCreateNestedManyWithoutUsers_trips_created_byTousersInput
 }
@@ -544,6 +663,10 @@ export type usersUpdateWithoutTrips_trips_created_byTousersInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session?: Prisma.sessionUpdateManyWithoutUsersNestedInput
   trip_chats?: Prisma.trip_chatsUpdateManyWithoutUsersNestedInput
   trips_trips_driver_idTousers?: Prisma.tripsUpdateManyWithoutUsers_trips_driver_idTousersNestedInput
 }
@@ -554,6 +677,10 @@ export type usersUncheckedUpdateWithoutTrips_trips_created_byTousersInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session?: Prisma.sessionUncheckedUpdateManyWithoutUsersNestedInput
   trip_chats?: Prisma.trip_chatsUncheckedUpdateManyWithoutUsersNestedInput
   trips_trips_driver_idTousers?: Prisma.tripsUncheckedUpdateManyWithoutUsers_trips_driver_idTousersNestedInput
 }
@@ -574,6 +701,10 @@ export type usersUpdateWithoutTrips_trips_driver_idTousersInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session?: Prisma.sessionUpdateManyWithoutUsersNestedInput
   trip_chats?: Prisma.trip_chatsUpdateManyWithoutUsersNestedInput
   trips_trips_created_byTousers?: Prisma.tripsUpdateManyWithoutUsers_trips_created_byTousersNestedInput
 }
@@ -584,8 +715,82 @@ export type usersUncheckedUpdateWithoutTrips_trips_driver_idTousersInput = {
   role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session?: Prisma.sessionUncheckedUpdateManyWithoutUsersNestedInput
   trip_chats?: Prisma.trip_chatsUncheckedUpdateManyWithoutUsersNestedInput
   trips_trips_created_byTousers?: Prisma.tripsUncheckedUpdateManyWithoutUsers_trips_created_byTousersNestedInput
+}
+
+export type usersCreateWithoutSessionInput = {
+  name: string
+  role: $Enums.user_role
+  phone?: string | null
+  created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  trip_chats?: Prisma.trip_chatsCreateNestedManyWithoutUsersInput
+  trips_trips_created_byTousers?: Prisma.tripsCreateNestedManyWithoutUsers_trips_created_byTousersInput
+  trips_trips_driver_idTousers?: Prisma.tripsCreateNestedManyWithoutUsers_trips_driver_idTousersInput
+}
+
+export type usersUncheckedCreateWithoutSessionInput = {
+  id?: number
+  name: string
+  role: $Enums.user_role
+  phone?: string | null
+  created_at?: Date | string | null
+  username?: string | null
+  email?: string | null
+  hashed_password?: string | null
+  trip_chats?: Prisma.trip_chatsUncheckedCreateNestedManyWithoutUsersInput
+  trips_trips_created_byTousers?: Prisma.tripsUncheckedCreateNestedManyWithoutUsers_trips_created_byTousersInput
+  trips_trips_driver_idTousers?: Prisma.tripsUncheckedCreateNestedManyWithoutUsers_trips_driver_idTousersInput
+}
+
+export type usersCreateOrConnectWithoutSessionInput = {
+  where: Prisma.usersWhereUniqueInput
+  create: Prisma.XOR<Prisma.usersCreateWithoutSessionInput, Prisma.usersUncheckedCreateWithoutSessionInput>
+}
+
+export type usersUpsertWithoutSessionInput = {
+  update: Prisma.XOR<Prisma.usersUpdateWithoutSessionInput, Prisma.usersUncheckedUpdateWithoutSessionInput>
+  create: Prisma.XOR<Prisma.usersCreateWithoutSessionInput, Prisma.usersUncheckedCreateWithoutSessionInput>
+  where?: Prisma.usersWhereInput
+}
+
+export type usersUpdateToOneWithWhereWithoutSessionInput = {
+  where?: Prisma.usersWhereInput
+  data: Prisma.XOR<Prisma.usersUpdateWithoutSessionInput, Prisma.usersUncheckedUpdateWithoutSessionInput>
+}
+
+export type usersUpdateWithoutSessionInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trip_chats?: Prisma.trip_chatsUpdateManyWithoutUsersNestedInput
+  trips_trips_created_byTousers?: Prisma.tripsUpdateManyWithoutUsers_trips_created_byTousersNestedInput
+  trips_trips_driver_idTousers?: Prisma.tripsUpdateManyWithoutUsers_trips_driver_idTousersNestedInput
+}
+
+export type usersUncheckedUpdateWithoutSessionInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.Enumuser_roleFieldUpdateOperationsInput | $Enums.user_role
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hashed_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trip_chats?: Prisma.trip_chatsUncheckedUpdateManyWithoutUsersNestedInput
+  trips_trips_created_byTousers?: Prisma.tripsUncheckedUpdateManyWithoutUsers_trips_created_byTousersNestedInput
+  trips_trips_driver_idTousers?: Prisma.tripsUncheckedUpdateManyWithoutUsers_trips_driver_idTousersNestedInput
 }
 
 
@@ -594,12 +799,14 @@ export type usersUncheckedUpdateWithoutTrips_trips_driver_idTousersInput = {
  */
 
 export type UsersCountOutputType = {
+  session: number
   trip_chats: number
   trips_trips_created_byTousers: number
   trips_trips_driver_idTousers: number
 }
 
 export type UsersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  session?: boolean | UsersCountOutputTypeCountSessionArgs
   trip_chats?: boolean | UsersCountOutputTypeCountTrip_chatsArgs
   trips_trips_created_byTousers?: boolean | UsersCountOutputTypeCountTrips_trips_created_byTousersArgs
   trips_trips_driver_idTousers?: boolean | UsersCountOutputTypeCountTrips_trips_driver_idTousersArgs
@@ -613,6 +820,13 @@ export type UsersCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
    * Select specific fields to fetch from the UsersCountOutputType
    */
   select?: Prisma.UsersCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UsersCountOutputType without action
+ */
+export type UsersCountOutputTypeCountSessionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.sessionWhereInput
 }
 
 /**
@@ -643,6 +857,10 @@ export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   role?: boolean
   phone?: boolean
   created_at?: boolean
+  username?: boolean
+  email?: boolean
+  hashed_password?: boolean
+  session?: boolean | Prisma.users$sessionArgs<ExtArgs>
   trip_chats?: boolean | Prisma.users$trip_chatsArgs<ExtArgs>
   trips_trips_created_byTousers?: boolean | Prisma.users$trips_trips_created_byTousersArgs<ExtArgs>
   trips_trips_driver_idTousers?: boolean | Prisma.users$trips_trips_driver_idTousersArgs<ExtArgs>
@@ -655,6 +873,9 @@ export type usersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   role?: boolean
   phone?: boolean
   created_at?: boolean
+  username?: boolean
+  email?: boolean
+  hashed_password?: boolean
 }, ExtArgs["result"]["users"]>
 
 export type usersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -663,6 +884,9 @@ export type usersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   role?: boolean
   phone?: boolean
   created_at?: boolean
+  username?: boolean
+  email?: boolean
+  hashed_password?: boolean
 }, ExtArgs["result"]["users"]>
 
 export type usersSelectScalar = {
@@ -671,10 +895,14 @@ export type usersSelectScalar = {
   role?: boolean
   phone?: boolean
   created_at?: boolean
+  username?: boolean
+  email?: boolean
+  hashed_password?: boolean
 }
 
-export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "role" | "phone" | "created_at", ExtArgs["result"]["users"]>
+export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "role" | "phone" | "created_at" | "username" | "email" | "hashed_password", ExtArgs["result"]["users"]>
 export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  session?: boolean | Prisma.users$sessionArgs<ExtArgs>
   trip_chats?: boolean | Prisma.users$trip_chatsArgs<ExtArgs>
   trips_trips_created_byTousers?: boolean | Prisma.users$trips_trips_created_byTousersArgs<ExtArgs>
   trips_trips_driver_idTousers?: boolean | Prisma.users$trips_trips_driver_idTousersArgs<ExtArgs>
@@ -686,6 +914,7 @@ export type usersIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "users"
   objects: {
+    session: Prisma.$sessionPayload<ExtArgs>[]
     trip_chats: Prisma.$trip_chatsPayload<ExtArgs>[]
     trips_trips_created_byTousers: Prisma.$tripsPayload<ExtArgs>[]
     trips_trips_driver_idTousers: Prisma.$tripsPayload<ExtArgs>[]
@@ -696,6 +925,9 @@ export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     role: $Enums.user_role
     phone: string | null
     created_at: Date | null
+    username: string | null
+    email: string | null
+    hashed_password: string | null
   }, ExtArgs["result"]["users"]>
   composites: {}
 }
@@ -1090,6 +1322,7 @@ readonly fields: usersFieldRefs;
  */
 export interface Prisma__usersClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  session<T extends Prisma.users$sessionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$sessionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$sessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   trip_chats<T extends Prisma.users$trip_chatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$trip_chatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$trip_chatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   trips_trips_created_byTousers<T extends Prisma.users$trips_trips_created_byTousersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$trips_trips_created_byTousersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$tripsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   trips_trips_driver_idTousers<T extends Prisma.users$trips_trips_driver_idTousersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$trips_trips_driver_idTousersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$tripsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1127,6 +1360,9 @@ export interface usersFieldRefs {
   readonly role: Prisma.FieldRef<"users", 'user_role'>
   readonly phone: Prisma.FieldRef<"users", 'String'>
   readonly created_at: Prisma.FieldRef<"users", 'DateTime'>
+  readonly username: Prisma.FieldRef<"users", 'String'>
+  readonly email: Prisma.FieldRef<"users", 'String'>
+  readonly hashed_password: Prisma.FieldRef<"users", 'String'>
 }
     
 
@@ -1512,6 +1748,30 @@ export type usersDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many users to delete.
    */
   limit?: number
+}
+
+/**
+ * users.session
+ */
+export type users$sessionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the session
+   */
+  select?: Prisma.sessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the session
+   */
+  omit?: Prisma.sessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.sessionInclude<ExtArgs> | null
+  where?: Prisma.sessionWhereInput
+  orderBy?: Prisma.sessionOrderByWithRelationInput | Prisma.sessionOrderByWithRelationInput[]
+  cursor?: Prisma.sessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
 }
 
 /**

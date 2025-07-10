@@ -41,3 +41,4 @@ You can preview the production build with `npm run preview`.
 # Todo
 add function to auto add message when trip created, and it is customizable
 add login function with session control with Lucia
+complete pagination on admin site

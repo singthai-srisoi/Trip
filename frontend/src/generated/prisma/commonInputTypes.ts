@@ -218,6 +218,23 @@ export type Enumuser_roleWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumuser_roleFilter<$PrismaModel>
 }
 
+export type BytesFilter<$PrismaModel = never> = {
+  equals?: Uint8Array | Prisma.BytesFieldRefInput<$PrismaModel>
+  in?: Uint8Array[] | Prisma.ListBytesFieldRefInput<$PrismaModel>
+  notIn?: Uint8Array[] | Prisma.ListBytesFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBytesFilter<$PrismaModel> | Uint8Array
+}
+
+export type BytesWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: Uint8Array | Prisma.BytesFieldRefInput<$PrismaModel>
+  in?: Uint8Array[] | Prisma.ListBytesFieldRefInput<$PrismaModel>
+  notIn?: Uint8Array[] | Prisma.ListBytesFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBytesWithAggregatesFilter<$PrismaModel> | Uint8Array
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBytesFilter<$PrismaModel>
+  _max?: Prisma.NestedBytesFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -434,6 +451,23 @@ export type NestedEnumuser_roleWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumuser_roleFilter<$PrismaModel>
   _max?: Prisma.NestedEnumuser_roleFilter<$PrismaModel>
+}
+
+export type NestedBytesFilter<$PrismaModel = never> = {
+  equals?: Uint8Array | Prisma.BytesFieldRefInput<$PrismaModel>
+  in?: Uint8Array[] | Prisma.ListBytesFieldRefInput<$PrismaModel>
+  notIn?: Uint8Array[] | Prisma.ListBytesFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBytesFilter<$PrismaModel> | Uint8Array
+}
+
+export type NestedBytesWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: Uint8Array | Prisma.BytesFieldRefInput<$PrismaModel>
+  in?: Uint8Array[] | Prisma.ListBytesFieldRefInput<$PrismaModel>
+  notIn?: Uint8Array[] | Prisma.ListBytesFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBytesWithAggregatesFilter<$PrismaModel> | Uint8Array
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBytesFilter<$PrismaModel>
+  _max?: Prisma.NestedBytesFilter<$PrismaModel>
 }
 
 

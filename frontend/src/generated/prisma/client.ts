@@ -66,6 +66,11 @@ export type users = Prisma.usersModel
  * 
  */
 export type vehicles = Prisma.vehiclesModel
+/**
+ * Model session
+ * 
+ */
+export type session = Prisma.sessionModel
 
 export type user_role = $Enums.user_role
 export const user_role = $Enums.user_role
