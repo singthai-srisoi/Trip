@@ -1,20 +1,89 @@
 import prisma from "$lib/server/prisma.server";
-import { superValidate } from "sveltekit-superforms";
 import type { Actions, PageServerLoad } from "./$types";
-import { zod } from "sveltekit-superforms/adapters";
-import { tripSchemaCreate } from "$lib/schema/TripSchema";
 
 
-export let load: PageServerLoad = async () => {
-    let drivers = await prisma.users.findMany({
+export let load: PageServerLoad = async ({ url }) => {
+    console.log(Object.fromEntries(url.searchParams.entries()))
+    /**
+    {
+        page: '1',
+        sort: 'name',
+        order: 'asc',
+        search: 'test',
+        limit: '10'
+        max_page: '10',
+        data: drivers
+    }
+     */
+    // let drivers = await prisma.users.findMany({
+    //     where: {
+    //         role: 'driver'
+    //     }
+    // })
+    // const form = await superValidate(zod(tripSchemaCreate));
+    // return {
+    //     form,
+    //     drivers,
+    // }
+
+    const page = parseInt(url.searchParams.get('page') || '1')
+    const limit = parseInt(url.searchParams.get('limit') || '10')
+    const sort = url.searchParams.get('sort') || 'name'
+    const order = url.searchParams.get('order') === 'desc' ? 'desc' : 'asc'
+    const search = url.searchParams.get('search')?.trim() || ''
+
+    const skip = (page - 1) * limit
+
+    // Fetch drivers
+    const drivers = await prisma.users.findMany({
         where: {
-            role: 'driver'
-        }
+            role: 'driver',
+            ...(search && {
+                    name: {
+                        contains: search,
+                        mode: 'insensitive'
+                    },
+                    phone: {
+                        contains: search,
+                        mode: 'insensitive'
+                    }
+                }
+            )
+        },
+        orderBy: {
+            [sort]: order
+        },
+        skip,
+        take: limit
     })
-    const form = await superValidate(zod(tripSchemaCreate));
+
+    // Count for pagination
+    const totalCount = await prisma.users.count({ 
+        where: {
+            role: 'driver',
+            ...(search && {
+                    name: {
+                        contains: search,
+                        mode: 'insensitive'
+                    },
+                    phone: {
+                        contains: search,
+                        mode: 'insensitive'
+                    }
+                }
+            )
+        },
+    })
+    const max_page = Math.ceil(totalCount / limit)
+
     return {
-        form,
-        drivers,
+        page: String(page),
+        sort,
+        order,
+        search,
+        limit: String(limit),
+        max_page: String(max_page),
+        data: drivers,
     }
 }
 

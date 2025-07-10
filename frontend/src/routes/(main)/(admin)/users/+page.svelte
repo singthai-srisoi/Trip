@@ -15,6 +15,27 @@
     let showModal = $state(false);
     let deleteUser: users | null = $state(null);
 
+    let currentPage = parseInt(data.page)
+    let maxPage = parseInt(data.max_page)
+    let paginationPages = () => {
+      let pages = []
+
+      if (maxPage <= 5) {
+        // Show all pages if 5 or fewer
+        for (let i = 1; i <= maxPage; i++) pages.push(i)
+      } else {
+        if (currentPage <= 3) {
+          pages = [1, 2, 3, 4, '...', maxPage]
+        } else if (currentPage >= maxPage - 2) {
+          pages = [1, '...', maxPage - 3, maxPage - 2, maxPage - 1, maxPage]
+        } else {
+          pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', maxPage]
+        }
+      }
+
+      return pages
+    }
+
 
 </script>
 <svelte:head>
@@ -41,7 +62,7 @@
       </tr>
     </thead>
     <tbody>
-        {#each data.users as user (user.id)}
+        {#each data.data as user (user.id)}
             <tr>
                 <th>{user.name}</th>
                 <td>{user.phone == 'null' || user.phone == null ? '' : user.phone}</td>
@@ -70,7 +91,43 @@
 
 </div>
 
+{#if maxPage > 1}
 <div class="join w-full flex justify-center mt-4">
+  <!-- Previous button -->
+  <a
+    class="join-item btn btn-xs"
+    href={`?page=${Math.max(currentPage - 1, 1)}`}
+    class:btn-disabled={currentPage === 1}
+  >
+    {'<<'}
+  </a>
+
+  <!-- Page buttons -->
+  {#each paginationPages() as p}
+    {#if p === '...'}
+      <button class="join-item btn btn-xs btn-disabled">...</button>
+    {:else}
+      <a
+        href={`?page=${p}`}
+        class="join-item btn btn-xs {currentPage === p ? 'btn-active' : ''}"
+      >
+        {p}
+      </a>
+    {/if}
+  {/each}
+
+  <!-- Next button -->
+  <a
+    class="join-item btn btn-xs"
+    href={`?page=${Math.min(currentPage + 1, maxPage)}`}
+    class:btn-disabled={currentPage === maxPage}
+  >
+    {'>>'}
+  </a>
+</div>
+{/if}
+
+<!-- <div class="join w-full flex justify-center mt-4">
   <button class="join-item btn btn-sm">{'<<'}</button>
 
   <button class="join-item btn btn-sm">1</button>
@@ -80,7 +137,7 @@
   <button class="join-item btn btn-sm">100</button>
   <button class="join-item btn btn-sm">{'>>'}</button>
 
-</div>
+</div> -->
 
 {#if showModal}
 <dialog id="my_modal_1" class="modal p-0" open>
