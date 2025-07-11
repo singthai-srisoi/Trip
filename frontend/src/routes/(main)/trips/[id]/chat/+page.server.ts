@@ -17,7 +17,6 @@ export let load: PageServerLoad = async ({ parent }) => {
 export let actions = {
     sent: async ({ request }) => {
         const form = await superValidate(request, zod(chatSchemaCreate))
-        console.log(form.data)
 
         if (!form.valid) {
             return fail(400, { form })

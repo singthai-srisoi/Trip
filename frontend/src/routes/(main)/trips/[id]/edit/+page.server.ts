@@ -63,7 +63,6 @@ export let actions = {
 
             // return redirect(303, `/trips/${res.id}/edit`)
         } catch (error) {
-            console.error("Edit trip error:", error)
             return fail(500, {
                 form,
                 message: "Failed to update trip",

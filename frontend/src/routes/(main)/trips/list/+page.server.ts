@@ -51,7 +51,6 @@ export let load: PageServerLoad = async () => {
         
     })
 
-    console.log('trips', trips)
     return {
         trips: Array.from(group.values())
     }

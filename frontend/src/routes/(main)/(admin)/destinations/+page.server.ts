@@ -71,7 +71,6 @@ export let actions = {
     delete: async ({ request }) => {
         let form = await request.formData();
         let destinationId = form.get("id");
-        console.log("Delete destination ID:", destinationId);
         if (!destinationId) {
             return {
                 status: 400,
@@ -84,7 +83,6 @@ export let actions = {
             });
             return { success: true, message: "Destination deleted successfully" };
         } catch (error) {
-            console.error("Delete destination error:", error);
             return {
                 success: false,
                 message: "Failed to delete destination" + error,

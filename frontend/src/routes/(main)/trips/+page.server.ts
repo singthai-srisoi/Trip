@@ -1,4 +1,4 @@
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import prisma from '$lib/server/prisma.server';
 import type { destinations, trips, vehicles } from '$generated/prisma';
 
@@ -9,13 +9,92 @@ interface trips_model extends trips {
 }
 
 export const load: PageServerLoad = async ({}) => {
-    let today = new Date()
-    today.setHours(0, 0, 0, 0) // Ensure only date is matched
+
+    let grouped = await getTrips(null, null)
+    
+    return {
+        trips: grouped
+    }
+}
+
+
+export let actions = {
+    search: async ({ request }) => {
+        const form = await request.formData()
+        console.log(Object.fromEntries(form.entries()))
+        const dateStr = form.get('date') as string
+        const search = form.get('search') as string | null
+
+        let date: Date | null = null
+        if (dateStr) {
+            date = new Date(dateStr)
+            if (isNaN(date.getTime())) {
+                date = null // Invalid date
+            }
+        }
+
+        let grouped = await getTrips(date, search)
+        console.log({search, date}, grouped)
+        if (grouped.size === 0) {
+            return {
+                status: 404,
+                body: { message: 'No trips found for the given date or search term.' }
+            }
+        }
+
+
+        return {
+            trips: grouped
+        }
+
+    }
+
+} satisfies Actions
+
+let getTrips = async (date: Date | null = new Date(), search: string | null = null) => {
+    // let today = new Date()
+    date?.setHours(0, 0, 0, 0) // Ensure only date is matched
 
     const trips_ = await prisma.trips.findMany({
-        // where: {
-        //     date: today
-        // },
+        where: {
+            ...(date && {'date': date}),
+            ...(search && {
+                OR: [
+                    {users_trips_driver_idTousers: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {vehicles: {
+                        plate_no: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {destinations_trips_end_destination_idTodestinations: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        },
+                        address: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {destinations_trips_start_destination_idTodestinations: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        },
+                        address: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }}
+                ]
+            })
+        },
         include: {
             vehicles: true,
             destinations_trips_end_destination_idTodestinations: {},
@@ -36,21 +115,6 @@ export const load: PageServerLoad = async ({}) => {
         // @ts-ignore
         grouped.get(plate_no)!.push(trip);
     }
-    
 
-    const vehicles = (await prisma.vehicles.findMany({
-        select: {
-            plate_no: true,
-        },
-        where: {
-            trips: {
-                some: {}
-            }
-        }
-    })).map(v => v.plate_no)
-    
-    return {
-        vehicles,
-        trips: grouped
-    }
+    return grouped
 }

@@ -8,6 +8,7 @@
         form
     }: Props = $props()
 </script>
+<div class="w-full min-h-[100dvh] flex items-center justify-center">
 
 <form action="?/login" method="post">
     <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
@@ -38,3 +39,5 @@
     <button type="submit" class="btn btn-neutral mt-4">Login</button>
     </fieldset>
 </form>
+
+</div>

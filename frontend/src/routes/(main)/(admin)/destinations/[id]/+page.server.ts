@@ -22,7 +22,6 @@ export let load: PageServerLoad = async ({ params }) => {
 
 export let actions = {
     edit: async ({ request }) => {
-        console.log("Edit destination action triggered");
 
         const form = await superValidate(request, zod(destinationSchema))
 
