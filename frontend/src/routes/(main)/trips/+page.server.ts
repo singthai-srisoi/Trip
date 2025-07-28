@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import prisma from '$lib/server/prisma.server';
 import type { destinations, trips, vehicles } from '$generated/prisma';
+import { date } from 'zod/v4';
 
 interface trips_model extends trips {
     vehicles: vehicles
@@ -8,12 +9,14 @@ interface trips_model extends trips {
     destinations_trips_start_destination_idTodestinations: destinations
 }
 
-export const load: PageServerLoad = async ({}) => {
-
-    let grouped = await getTrips(null, null)
+export const load: PageServerLoad = async ({ url }) => {
+    let date = url.searchParams.get('date') ? new Date(url.searchParams.get('date') as string) : new Date()
+    date.setHours(0, 0, 0, 0) // Ensure only date is matched
+    let grouped = await getTrips(date, null)
     
     return {
-        trips: grouped
+        trips: grouped,
+        date: date,
     }
 }
 
@@ -34,7 +37,6 @@ export let actions = {
         }
 
         let grouped = await getTrips(date, search)
-        console.log({search, date}, grouped)
         if (grouped.size === 0) {
             return {
                 status: 404,
@@ -53,7 +55,9 @@ export let actions = {
 
 let getTrips = async (date: Date | null = new Date(), search: string | null = null) => {
     // let today = new Date()
-    date?.setHours(0, 0, 0, 0) // Ensure only date is matched
+    // date?.setHours(0, 0, 0, 0) // Ensure only date is matched
+    // set to +8 timezone
+    date?.setHours(date.getHours() + 8)
 
     const trips_ = await prisma.trips.findMany({
         where: {
@@ -109,11 +113,13 @@ let getTrips = async (date: Date | null = new Date(), search: string | null = nu
     for (const trip of trips_) {
         //  @ts-ignore
         const plate_no = trip.vehicles.plate_no;
-        if (!grouped.has(plate_no)) {
-            grouped.set(plate_no, []);
+        const date = trip.date.toISOString().split('T')[0]; // Format date to YYYY-MM-DD
+        let key = `${plate_no} ${date}`;
+        if (!grouped.has(key)) {
+            grouped.set(key, []);
         }
         // @ts-ignore
-        grouped.get(plate_no)!.push(trip);
+        grouped.get(key)!.push(trip);
     }
 
     return grouped

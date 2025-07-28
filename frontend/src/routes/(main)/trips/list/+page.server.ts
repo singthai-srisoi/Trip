@@ -22,8 +22,66 @@ interface TripsGroup {
 }
 
 
-export let load: PageServerLoad = async () => {
-    let trips = await prisma.trips.findMany({
+export let load: PageServerLoad = async ({ url }) => {
+
+    const page = parseInt(url.searchParams.get('page') || '1')
+    const limit = parseInt(url.searchParams.get('limit') || '10')
+    const sort = url.searchParams.get('sort') || 'date'
+    const order = url.searchParams.get('order') === 'desc' ? 'desc' : 'asc'
+    const search = url.searchParams.get('search')?.trim() || ''
+    const dateStr = url.searchParams.get('date') || ''
+    let date: Date | null = null
+    if (dateStr) {
+        date = new Date(dateStr)
+        if (isNaN(date.getTime())) {
+            date = null // Invalid date
+        }
+    }
+    console.log({search, date})
+
+    const skip = (page - 1) * limit
+
+    // Fetch drivers
+    const trips = await prisma.trips.findMany({
+        where: {
+            ...(date && {'date': date}),
+            ...(search && {
+                OR: [
+                    {users_trips_driver_idTousers: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {vehicles: {
+                        plate_no: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {destinations_trips_end_destination_idTodestinations: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        },
+                        address: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {destinations_trips_start_destination_idTodestinations: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        },
+                        address: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }}
+                ]
+            })
+        },
         include: {
             vehicles: { select: { plate_no: true } },
             destinations_trips_end_destination_idTodestinations: {
@@ -33,9 +91,55 @@ export let load: PageServerLoad = async () => {
                 select: { name: true }
             },
         },
-        orderBy: [{ date: 'asc' }, { vehicle_id: 'asc' }]
+        orderBy: {
+            [sort]: order
+        },
+        skip,
+        take: limit
     })
 
+    // Count for pagination
+    const totalCount = await prisma.trips.count({ 
+        where: {
+            ...(search && {
+                OR: [
+                    {users_trips_driver_idTousers: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {vehicles: {
+                        plate_no: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {destinations_trips_end_destination_idTodestinations: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        },
+                        address: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }},
+                    {destinations_trips_start_destination_idTodestinations: {
+                        name: {
+                            contains: search,
+                            mode: 'insensitive'
+                        },
+                        address: {
+                            contains: search,
+                            mode: 'insensitive'
+                        }
+                    }}
+                ]
+            })
+        },
+    })
+    const max_page = Math.ceil(totalCount / limit)
     let group = new Map<string, TripsGroup>()
     // @ts-ignore
     trips.forEach((trip: TripWithVehicle) => {
@@ -52,6 +156,12 @@ export let load: PageServerLoad = async () => {
     })
 
     return {
-        trips: Array.from(group.values())
+        page: String(page),
+        sort,
+        order,
+        search,
+        limit: String(limit),
+        max_page: String(max_page),
+        data: Array.from(group.values()),
     }
 }
