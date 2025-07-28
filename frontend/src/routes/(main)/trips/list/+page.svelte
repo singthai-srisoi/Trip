@@ -81,7 +81,7 @@
 
 <div class="w-full mb-2 flex justify-start items-center gap-2">
 
-<div class="relative">
+<div class="relative" use:clickOutside={() => showCalendar = false}>
   <button type="button" class="btn btn-ghost btn-sm bg-base-300" onclick={() => showCalendar = !showCalendar} >
     {value ? dateStr : 'Select Date'}
   </button>
