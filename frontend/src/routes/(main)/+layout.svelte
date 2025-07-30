@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import MenuIcon from './MenuIcon.svelte';
 	import { page } from '$app/state';
 	import { fade, fly, scale } from 'svelte/transition';
@@ -17,6 +17,12 @@
   }: Props = $props();
   let bounce_in = {duration: 625, easing: elasticInOut, start: 0.5}
   let fade_out = {duration: 300}
+
+  onMount(() => {
+    if ("Notification" in window && Notification.permission !== "granted") {
+      Notification.requestPermission()
+    }
+  })
 </script>
 
 <section class="min-h-screen pb-[80px] overflow-auto relative">

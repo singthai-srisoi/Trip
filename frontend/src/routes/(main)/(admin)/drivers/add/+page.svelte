@@ -19,6 +19,9 @@
     let user: users = $state({
         id: 0,
         role: user_role.driver,
+        username: '',
+        hashed_password: '',
+        email: '',
         name: '',
         created_at: null,
         phone: '',

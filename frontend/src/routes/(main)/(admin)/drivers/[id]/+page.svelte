@@ -38,6 +38,9 @@
         name: '',
         created_at: null,
         phone: '',
+        username: '',
+        hashed_password: '',
+        email: '',
     })
 
     async function onsubmit(event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement}) {

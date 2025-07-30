@@ -17,7 +17,6 @@ export let load: PageServerLoad = async ({ locals }) => {
 
 export let actions: Actions = {
     reset_password: async ({ request, locals }) => {
-        console.log('reset_password', locals)
 
         let user_id = locals.session?.user_id
         if (!user_id) {

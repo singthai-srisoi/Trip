@@ -15,7 +15,8 @@
             value: any,
             label: any,
         }[]
-        value: any
+        value: any,
+        disabled?: boolean
     }
 
     let {
@@ -23,6 +24,7 @@
         placeholder = "",
         error,
         items,
+        disabled = false,
         value = $bindable()
     }: Props = $props()
 
@@ -61,6 +63,7 @@
             }
             role="combobox"
             aria-expanded={open}
+            {disabled}
         >
             {#if selectedValue}
                 {selectedValue}

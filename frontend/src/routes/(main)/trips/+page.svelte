@@ -96,7 +96,9 @@
   
   
   <div class="flex gap-2">
-    <a class="btn btn-ghost btn-sm bg-base-300" href="/trips/add">Add</a>
+    {#if data.user?.role === 'admin'}
+      <a class="btn btn-ghost btn-sm bg-base-300" href="/trips/add">Add</a>
+    {/if}
     
     
     <a class="btn btn-ghost btn-sm bg-base-300" href="/trips/list">View All</a>

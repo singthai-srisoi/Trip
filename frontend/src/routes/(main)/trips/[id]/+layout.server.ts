@@ -1,10 +1,14 @@
 import prisma from "$lib/server/prisma.server";
 import { includes } from "zod/v4";
 import type { LayoutServerLoad } from "./$types";
+import { error } from "@sveltejs/kit";
 
-
-export let load: LayoutServerLoad = async ({ params }) => {
-
+const ROLE_ALLOWED = ['admin', 'driver', 'director'];
+export let load: LayoutServerLoad = async ({ params, parent }) => {
+    let { user } = await parent()
+    if (!user || !ROLE_ALLOWED.includes(user.role)) {
+        throw error(403, 'Forbidden')
+    }
     let id = Number(params.id)
     let trips = await prisma.trips.findUnique({
         where: {
@@ -18,13 +22,14 @@ export let load: LayoutServerLoad = async ({ params }) => {
             trip_chats: {
                 include: {
                     users: true
-                }
+                },
             }
         }
     })
     return {
         id,
-        trips
+        trips,
+        user
     }
 }
 

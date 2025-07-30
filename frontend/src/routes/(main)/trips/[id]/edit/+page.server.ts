@@ -3,10 +3,15 @@ import { superValidate } from 'sveltekit-superforms';
 import { schemasafe, zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from "./$types";
 import { tripSchema } from '$lib/schema/TripSchema';
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { trips } from '$generated/prisma';
 
+const ROLE_ALLOWED = ['admin', 'driver', 'director'];
 export let load: PageServerLoad = async ({ parent }) => {
+    let { user } = await parent()
+    if (!user || !ROLE_ALLOWED.includes(user.role)) {
+        throw error(403, 'Forbidden')
+    }
     let vehicles = await prisma.vehicles.findMany()
     let destinations = await prisma.destinations.findMany()
     let drivers = await prisma.users.findMany({
@@ -18,6 +23,7 @@ export let load: PageServerLoad = async ({ parent }) => {
     let layoutData = await parent()
 
     return {
+        user,
         form,
         drivers,
         vehicles,
@@ -58,7 +64,6 @@ export let actions = {
     
     },
     admin_check: async ({ params }) => {
-        console.log('admin_check' + params.id)
         let id = Number(params.id)
         let trip = await prisma.trips.findUnique({
             where: { id },
@@ -73,7 +78,6 @@ export let actions = {
         })
     },
     driver_check: async ({ params }) => {
-        console.log('driver_check' + params.id)
         let id = Number(params.id)
         let trip = await prisma.trips.findUnique({
             where: { id },

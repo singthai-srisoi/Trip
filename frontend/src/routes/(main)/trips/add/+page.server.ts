@@ -3,10 +3,15 @@ import { superValidate } from 'sveltekit-superforms';
 import { schemasafe, zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from "./$types";
 import { tripSchemaCreate } from '$lib/schema/TripSchema';
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { trips } from '$generated/prisma';
 
-export let load: PageServerLoad = async () => {
+const ROLE_ALLOWED = ['admin',];
+export let load: PageServerLoad = async ({ parent }) => {
+    let { user } = await parent()
+    if (!user || !ROLE_ALLOWED.includes(user.role)) {
+        throw error(403, 'Forbidden')
+    }
     let vehicles = await prisma.vehicles.findMany()
     let destinations = await prisma.destinations.findMany()
     let drivers = await prisma.users.findMany({
@@ -19,13 +24,21 @@ export let load: PageServerLoad = async () => {
         form,
         drivers,
         vehicles,
-        destinations
+        destinations,
+        user
     }
 }
 
 
 export let actions = {
-    create: async ({ request }) => {
+    create: async ({ request, locals }) => {
+        let user_id: number | null | undefined = locals.session?.user_id
+        let user = await prisma.users.findUnique({
+            where: { id: user_id },
+        })
+        if (!user || !ROLE_ALLOWED.includes(user.role)) {
+            throw error(403, 'Forbidden')
+        }
         const form = await superValidate(request, zod(tripSchemaCreate))
         if (!form.valid) {
             return fail(400, { form })

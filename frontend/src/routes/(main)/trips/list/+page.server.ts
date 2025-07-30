@@ -1,5 +1,6 @@
 import type { Prisma, trips } from "$generated/prisma";
 import prisma from "$lib/server/prisma.server";
+import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 
@@ -21,8 +22,12 @@ interface TripsGroup {
     trips: TripWithVehicle[]
 }
 
-
-export let load: PageServerLoad = async ({ url }) => {
+const ROLE_ALLOWED = ['admin', 'driver', 'director'];
+export let load: PageServerLoad = async ({ url, parent }) => {
+    let { user } = await parent()
+    if (!user || !ROLE_ALLOWED.includes(user.role)) {
+        throw error(403, 'Forbidden')
+    }
 
     const page = parseInt(url.searchParams.get('page') || '1')
     const limit = parseInt(url.searchParams.get('limit') || '10')
@@ -37,14 +42,16 @@ export let load: PageServerLoad = async ({ url }) => {
             date = null // Invalid date
         }
     }
-    console.log({search, date})
+    
 
     const skip = (page - 1) * limit
+    let user_id: number | null = user?.role === 'driver' ? user.id : null;
 
     // Fetch drivers
     const trips = await prisma.trips.findMany({
         where: {
             ...(date && {'date': date}),
+            ...(user_id && {'driver_id': user_id}),
             ...(search && {
                 OR: [
                     {users_trips_driver_idTousers: {

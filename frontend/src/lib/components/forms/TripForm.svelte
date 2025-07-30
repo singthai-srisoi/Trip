@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { trips } from '$generated/prisma';
+	import type { trips, users } from '$generated/prisma';
     import date from 'date-and-time';
 	import CustomeSvg from '../CustomeSVG.svelte';
 	import ComboBox from '../ComboBox.svelte';
@@ -10,6 +10,7 @@
         destination_option: App.ComboOption[]
         form: {[k:string]:any}
         trip: trips
+        user: users
     }
 
     let {
@@ -17,6 +18,7 @@
         vehicle_option,
         destination_option,
         form,
+        user,
         trip = $bindable()
     }: Props = $props()
 
@@ -35,6 +37,7 @@
             <button type="button" popovertarget="cally-popover1" 
                 class={form?.form?.errors?.date ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
                 id="cally1" style="anchor-name:--cally1"
+                disabled={user.role != 'admin'}
             >
                 {date.format(trip.date, 'YYYY-MM-DD')}
             </button>
@@ -56,18 +59,18 @@
         </calendar-date>
     </div>
 
-    <div class="w-full">
-        <ComboBox placeholder="Driver" items={driver_option} bind:value={trip.driver_id} label={"Driver"} error={form?.form?.errors?.driver_id}  />
+    <div class="w-full">     
+        <ComboBox placeholder="Driver" items={driver_option} bind:value={trip.driver_id} label={"Driver"} error={form?.form?.errors?.driver_id} disabled={user.role != 'admin'}  />
     </div>
     <div class="w-full">
-        <ComboBox placeholder="Vehicle" items={vehicle_option} bind:value={trip.vehicle_id} label={"Vehicle"} error={form?.form?.errors?.vehicle_id}  />
+        <ComboBox placeholder="Vehicle" items={vehicle_option} bind:value={trip.vehicle_id} label={"Vehicle"} error={form?.form?.errors?.vehicle_id} disabled={user.role != 'admin'} />
     </div>
     <div class="join w-full">
         <div class="w-full">
-            <ComboBox placeholder="From" items={destination_option} bind:value={trip.start_destination_id} label={"From"}  error={form?.form?.errors?.start_destination_id}  />
+            <ComboBox placeholder="From" items={destination_option} bind:value={trip.start_destination_id} label={"From"}  error={form?.form?.errors?.start_destination_id} disabled={user.role != 'admin'} />
         </div>
         <div class="w-full">
-            <ComboBox placeholder="To" items={destination_option} bind:value={trip.end_destination_id} label={"To"}  error={form?.form?.errors?.end_destination_id}  />
+            <ComboBox placeholder="To" items={destination_option} bind:value={trip.end_destination_id} label={"To"}  error={form?.form?.errors?.end_destination_id} disabled={user.role != 'admin'} />
         </div>
 
     </div>
@@ -75,7 +78,7 @@
     <div class="w-full">
         <label class="floating-label">
             <span>Remark</span>
-            <textarea class="textarea w-full border border-base-300" placeholder="Remark" bind:value={trip.remark}></textarea>
+            <textarea class="textarea w-full border border-base-300" placeholder="Remark" bind:value={trip.remark} disabled={user.role != 'admin'}></textarea>
         </label>
     </div>
 
@@ -91,6 +94,7 @@
                 trip.trip_number = 1
             }
             }}
+            disabled={user.role != 'admin'}
         />
         Gantung
         </label>
@@ -100,6 +104,7 @@
                 <input type="number" placeholder="Trip Number" 
                     class={form?.form?.errors?.trip_number ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
                     bind:value={trip.trip_number} min={1} max={2}  
+                    disabled={user.role != 'admin'}
                 />
             </label>
             {#if form?.form?.errors?.trip_number}
@@ -107,6 +112,7 @@
             {/if}
         {/if}
     </div>
-
-    <button class="btn btn-primary" type="submit">Submit</button>
+    {#if user.role == 'admin'}
+        <button class="btn btn-primary" type="submit">Submit</button>
+    {/if}
 </fieldset>

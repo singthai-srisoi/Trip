@@ -21,6 +21,9 @@
         name: '',
         created_at: null,
         phone: '',
+        username: '',
+        hashed_password: '',
+        email: '',
     })
     
 

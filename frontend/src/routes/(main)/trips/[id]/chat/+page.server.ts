@@ -8,9 +8,18 @@ import { chatSchemaCreate } from "$lib/schema/ChatSchema";
 
 export let load: PageServerLoad = async ({ parent }) => {
     let layoutData = await parent()
+    let trip_id = layoutData.id
+    let trip_chats = await prisma.trip_chats.findMany({
+        where: { trip_id },
+        orderBy: {
+            timestamp: 'asc'
+        }
+
+    })
 
     return {
-        data: layoutData
+        data: layoutData,
+        trip_chats
     }
 }
 

@@ -14,8 +14,8 @@ export let actions = {
             return {
                 form: {
                     errors: {
-                        username: "Invalid username",
-                        password: "Invalid password"
+                        username: "Invalid username 1",
+                        password: "Invalid password 1"
                     }
                 }
             }
@@ -30,8 +30,8 @@ export let actions = {
             return {
                 form: {
                     errors: {
-                        username: "Invalid username",
-                        password: "Invalid password"
+                        username: "Invalid username 2",
+                        password: "Invalid password 2"
                     }
                 }
             }
@@ -44,14 +44,14 @@ export let actions = {
             Buffer.from(user.hashed_password, 'base64'),
             Buffer.from(hashedPassword)
         ) === 0
-        // console.log(isMatch, Buffer.from(user.hashed_password).toString(), '/n', Buffer.from(hashedPassword).toString())
+        // console.log(isMatch, '\n', Buffer.from(user.hashed_password).toString(), '\n', Buffer.from(hashedPassword).toString())
         // // ! bypassing password check for now
         if (!isMatch) {
             return {
                 form: {
                     errors: {
-                        username: "Invalid username",
-                        password: "Invalid password not match"
+                        username: "Invalid username 3",
+                        password: "Invalid password 3"
                     }
                 }
             }

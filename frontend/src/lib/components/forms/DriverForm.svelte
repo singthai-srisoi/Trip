@@ -15,6 +15,18 @@
     }: Props = $props()
 
 
+    let username = $derived(
+        user.name.toLowerCase().trim().replace(/\s+/g, '_')
+    )
+
+    $effect(() => {
+        if (user.name) {
+            if (user.created_at == null) {
+                user.username = username
+            }
+        }
+        
+    })
 
 </script>
 
@@ -27,6 +39,16 @@
                 <input type="text" placeholder="Name" 
                     class={form?.form?.errors?.name ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
                     bind:value={user.name}  
+                />
+            </label>
+    </div>
+
+    <div class="w-full">
+        <label class="floating-label">
+                <span>Username</span>
+                <input type="text" placeholder="Username" 
+                    class={form?.form?.errors?.username ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
+                    bind:value={user.username}
                 />
             </label>
     </div>

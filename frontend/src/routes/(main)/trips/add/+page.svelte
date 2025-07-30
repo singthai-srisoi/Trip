@@ -14,11 +14,7 @@
 
 
     interface Props {
-        data: {
-          drivers: users[]
-          vehicles: vehicles[]
-          destinations: destinations[]
-        } | PageData
+        data: PageData
         form: FormData
     }
 
@@ -112,6 +108,7 @@
     {driver_option}
     {destination_option}
     {form}
+    user={data.user}
     bind:trip
   />
 </form>

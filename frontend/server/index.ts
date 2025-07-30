@@ -1,27 +1,3 @@
-// import express from 'express'
-// import { createServer } from 'http'
-// import { Server } from 'socket.io'
-
-// import { handler } from '../build/handler.js'
-
-// const port = 3000
-// const app = express()
-// const server = createServer(app)
-
-// const io = new Server(server)
-
-// io.on('connection', (socket) => {
-//   socket.emit('eventFromServer', 'Hello, World 👋')
-// })
-
-// // SvelteKit should handle everything else using Express middleware
-// // https://github.com/sveltejs/kit/tree/master/packages/adapter-node#custom-server
-// app.use(handler)
-
-// server.listen(port)
-// console.log(`Server is running on http://localhost:${port}`)
-
-// server/index.ts or .js
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
@@ -29,28 +5,28 @@ import { Client } from 'pg'
 import { handler } from '../build/handler.js'
 import 'dotenv/config'
 
-
-// Setup Express + HTTP + Socket.io
+// -------------------- Server Setup --------------------
 const port = 3000
 const app = express()
 const server = createServer(app)
 const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:5173'
-  }
+  cors: { origin: 'http://localhost:5173' } // allow Vite dev
 })
 
-// Set of connected sockets mapped to trip_id
-const tripSockets = new Map<string, Set<string>>() // trip_id -> Set of socket IDs
-const socketToTrip = new Map<string, string>()     // socket ID -> trip_id
+// -------------------- Socket Tracking --------------------
+// 1️⃣ Trip-specific subscriptions: trip_id -> Set of socket IDs
+const tripSockets = new Map<string, Set<string>>()
 
-// PostgreSQL setup
+// 2️⃣ Global notifications: socket.id -> user info
+const globalSockets = new Map<string, { id: string; role: string }>()
+
+// -------------------- PostgreSQL Setup --------------------
 const pgClient = new Client({
   connectionString: process.env.DATABASE_URL
 })
 
 pgClient.connect().then(async () => {
-  console.log('Connected to PostgreSQL')
+  console.log('✅ Connected to PostgreSQL')
   await pgClient.query('LISTEN new_trip_chat')
 })
 
@@ -60,55 +36,72 @@ pgClient.on('notification', (msg) => {
   try {
     const chat = JSON.parse(msg.payload)
     const tripId = chat.trip_id?.toString()
+    const driverId = chat.driver_id?.toString()
 
-    if (!tripId) return
+    // 1️⃣ Notify trip-specific subscribers
+    const chatList = [chat]
+    if (tripId && tripSockets.has(tripId)) {
+      for (const socketId of tripSockets.get(tripId)!) {
+        io.sockets.sockets.get(socketId)?.emit('trip_chat', chatList)
+      }
+    }
 
-    const socketIds = tripSockets.get(tripId)
-    if (!socketIds) return
-
-    for (const socketId of socketIds) {
+    // 2️⃣ Notify global subscribers
+    for (const [socketId, user] of globalSockets.entries()) {
       const socket = io.sockets.sockets.get(socketId)
-      if (socket) {
-        socket.emit('trip_chat', chat)
+      if (!socket) continue
+
+      if (user.role === 'admin' || user.role === 'director') {
+        // Admin & director get all chats
+        socket.emit('trip_notification', chat)
+      } else if (user.role === 'driver' && driverId && user.id === driverId) {
+        // Driver only gets chats related to their driver_id
+        socket.emit('trip_notification', chat)
       }
     }
   } catch (err) {
-    console.error('Failed to parse NOTIFY payload:', err)
+    console.error('❌ Failed to parse NOTIFY payload:', err)
   }
 })
 
-// Socket.io connection
+// -------------------- Socket.io Logic --------------------
 io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id)
+  console.log('🔌 Client connected:', socket.id)
 
-  // Client must join a trip room with trip_id
+  // 1️⃣ Subscribe to a specific trip (chat page)
   socket.on('subscribe_trip', (tripId: string) => {
+    tripId = tripId.toString()
     console.log(`Socket ${socket.id} subscribed to trip ${tripId}`)
 
-    // Track which socket listens to which trip
-    tripId = tripId.toString()
-    socketToTrip.set(socket.id, tripId)
+    if (!tripSockets.has(tripId)) tripSockets.set(tripId, new Set())
+    tripSockets.get(tripId)!.add(socket.id)
 
-    if (!tripSockets.has(tripId)) {
-      tripSockets.set(tripId, new Set())
-    }
-
-    tripSockets.get(tripId)?.add(socket.id)
+    // Keep track for cleanup on disconnect
+    socket.data.tripId = tripId
   })
 
+  // 2️⃣ Subscribe to global notifications
+  socket.on('subscribe_global', (user: { id: string; role: string }) => {
+    console.log(`Socket ${socket.id} subscribed to global notifications`, user)
+    globalSockets.set(socket.id, { id: user.id.toString(), role: user.role })
+  })
+
+  // 🔌 Cleanup on disconnect
   socket.on('disconnect', () => {
-    const tripId = socketToTrip.get(socket.id)
+    const tripId = socket.data.tripId
     if (tripId) {
       tripSockets.get(tripId)?.delete(socket.id)
-      socketToTrip.delete(socket.id)
-      console.log(`Socket ${socket.id} unsubscribed from trip ${tripId}`)
     }
+
+    globalSockets.delete(socket.id)
+    console.log(`❌ Socket ${socket.id} disconnected`)
   })
 })
 
-// Mount SvelteKit SSR middleware
+// -------------------- Mount SvelteKit --------------------
 app.use(handler)
 
+// -------------------- Start Server --------------------
 server.listen(port, () => {
   console.log(`🚀 Server running on http://localhost:${port}`)
 })
