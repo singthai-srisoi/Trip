@@ -29,19 +29,6 @@ export let load: PageServerLoad = async ({ parent }) => {
 
 export let actions = {
     edit: async ({ request }) => {
-        // const form = await superValidate(request, zod(tripSchema))
-        // if (!form.valid) {
-        //     return fail(400, { form })
-        // }
-        // form.data.created_by = 1
-        // let res = await prisma.trips.create({
-        //     data: form.data
-        // })
-        // if (!res) {
-        //     return fail(500, { form, message: 'Failed to create trip' })
-        // }
-        // return redirect(303, `/trips/${res.id}`)
-
         const form = await superValidate(request, zod(tripSchema))
 
         if (!form.valid) {
@@ -69,5 +56,36 @@ export let actions = {
             })
         }
     
-    }
+    },
+    admin_check: async ({ params }) => {
+        console.log('admin_check' + params.id)
+        let id = Number(params.id)
+        let trip = await prisma.trips.findUnique({
+            where: { id },
+        })
+        if (!trip) {
+            return fail(404, { message: "Trip not found" });
+        }
+        trip.is_double_checked = true;
+        await prisma.trips.update({
+            where: { id },
+            data: trip
+        })
+    },
+    driver_check: async ({ params }) => {
+        console.log('driver_check' + params.id)
+        let id = Number(params.id)
+        let trip = await prisma.trips.findUnique({
+            where: { id },
+        })
+        if (!trip) {
+            return fail(404, { message: "Trip not found" });
+        }
+        trip.is_checked = true;
+        await prisma.trips.update({
+            where: { id },
+            data: trip
+        })
+
+    },
 } satisfies Actions

@@ -26,13 +26,31 @@
 </script>
 
 <div class="py-4">
-    <h1 class="text-2xl font-semibold mb-1">{data.trips?.vehicles?.plate_no}</h1>
+    <h1 class="text-2xl font-semibold mb-1">
+      {data.trips?.vehicles?.plate_no}
+      {#if data.trips?.is_checked && data.trips?.is_double_checked}
+        ✅
+      {/if}
+
+    </h1>
     
     <div class="flex flex-col">
+      <form action="" method="post">
         <div class="flex gap-2 mb-3">
             <a class="btn btn-ghost btn-sm bg-base-300" href={`/trips/${data.trips?.id}/chat`}>Chat</a>
             <a class="btn btn-ghost btn-sm bg-base-300" href={`/trips/${data.trips?.id}/edit`}>Edit</a>
+            {#if data.trips?.is_checked}
+              <button class="btn btn-ghost btn-sm bg-success" type="submit" formaction="edit?/driver_check" disabled>Driver ✅</button>
+            {:else}
+              <button class="btn btn-ghost btn-sm bg-base-300" type="submit" formaction="edit?/driver_check">Driver Check</button>
+            {/if}
+            {#if data.trips?.is_double_checked}
+              <button class="btn btn-ghost btn-sm bg-success" type="submit" formaction="edit?/admin_check" disabled>Admin ✅</button>
+            {:else}
+              <button class="btn btn-ghost btn-sm bg-base-300" type="submit" formaction="edit?/admin_check">Admin Check</button>
+            {/if}
         </div>
+      </form>
       <span class="text-sm">{data.trips?.date ? date.format(data.trips?.date, "YYYY-MM-DD") : ""}</span>
       <div class="breadcrumbs text-sm p-0">
         <ul>

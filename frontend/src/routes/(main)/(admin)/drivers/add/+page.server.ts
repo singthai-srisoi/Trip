@@ -4,6 +4,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions } from "./$types";
 import { fail, redirect } from '@sveltejs/kit';
 import { userSchemaCreate } from '$lib/schema/UserSchema';
+import { DEFAULT_PASSWORD } from '$env/static/private';
 
 
 
@@ -15,8 +16,15 @@ export let actions = {
             return fail(400, { form })
         }
         
+        const encoder = new TextEncoder();
+        const raw = encoder.encode(DEFAULT_PASSWORD);
+        const hashedPassword = await crypto.subtle.digest("SHA-256", raw);
+        
         let res = await prisma.users.create({
-            data: form.data
+            data: {
+                hashed_password: Buffer.from(hashedPassword).toString('base64'),
+                ...form.data
+            }
         })
         if (!res) {
             return fail(500, { form, message: 'Failed to create trip' })

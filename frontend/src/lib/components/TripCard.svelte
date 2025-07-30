@@ -40,7 +40,7 @@
         </h2>
         {#each trip[1] as t, i}
             <div class={"flex justify-between items-center gap-2"}>
-                <p class={"font-bold"}>Trip {i < 2 ? i+1 : 'Gantung'}: {t.date ? date.format(t.date, "DD MMM") : ''}</p>
+                <p class={"font-bold"}>Trip {t.trip_number <= 2 ? t.trip_number : 'Gantung'}: {t.date ? date.format(t.date, "DD MMM") : ''}</p>
                 <a href={`/trips/${t.id}/chat`} class={"btn btn-xs btn-soft btn-accent"}>view</a>
             </div>
             <ul class="steps">

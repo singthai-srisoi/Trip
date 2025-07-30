@@ -16,11 +16,15 @@
 
     <div class="w-full">
             <label class="floating-label">
-                    <span>Email</span>
-                    <input type="text" placeholder="Email" 
-                        class={form?.form?.errors?.email ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
-
+                    <span>Username</span>
+                    <input type="text" placeholder="Username" name="username"
+                        class={form?.form?.errors?.username ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
                     />
+                    {#if form?.form?.errors?.username}
+                    <div role="alert" class="alert alert-error alert-soft">
+                        <span>{form?.form?.errors?.username}</span>
+                    </div>
+                    {/if}
                 </label>
         </div>
 
@@ -28,10 +32,15 @@
     <div class="w-full">
             <label class="floating-label">
                     <span>Password</span>
-                    <input type="password" placeholder="Password" 
+                    <input type="password" placeholder="Password" name="password"
                         class={form?.form?.errors?.password ? "input input-error border w-full" : "input input-border border border-base-300 w-full" }
 
                     />
+                    {#if form?.form?.errors?.password}
+                    <div role="alert" class="alert alert-error alert-soft">
+                        <span>{form?.form?.errors?.password}</span>
+                    </div>
+                    {/if}
                 </label>
         </div>
 

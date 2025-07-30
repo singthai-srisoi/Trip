@@ -35,6 +35,17 @@ export let actions = {
         let res = await prisma.trips.create({
             data: form.data
         })
+        // check is_gantung
+        if (form.data.is_gantung) {
+            // add trip 1 to next day
+            form.data.date = new Date(form.data.date)
+            form.data.date.setDate(form.data.date.getDate() + 1)
+            form.data.is_gantung = false // Reset is_gantung for the next trip
+            form.data.trip_number = 1
+            await prisma.trips.create({
+                data: form.data
+            })
+        }
         if (!res) {
             return fail(500, { form, message: 'Failed to create trip' })
         }
