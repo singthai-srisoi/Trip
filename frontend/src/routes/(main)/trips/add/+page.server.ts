@@ -44,7 +44,7 @@ export let actions = {
             return fail(400, { form })
         }
         // TODO: Set created_by to the current user ID
-        form.data.created_by = 1
+        form.data.created_by = locals.session?.user_id
         let res = await prisma.trips.create({
             data: form.data
         })

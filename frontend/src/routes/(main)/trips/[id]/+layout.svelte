@@ -47,7 +47,9 @@
             {#if data.trips?.is_double_checked}
               <button class="btn btn-ghost btn-sm bg-success" type="submit" formaction="edit?/admin_check" disabled>Admin ✅</button>
             {:else}
-              <button class="btn btn-ghost btn-sm bg-base-300" type="submit" formaction="edit?/admin_check">Admin Check</button>
+              <button class="btn btn-ghost btn-sm bg-base-300" type="submit" formaction="edit?/admin_check"
+               disabled={data.user.role != 'admin'}
+              >Admin Check</button>
             {/if}
         </div>
       </form>

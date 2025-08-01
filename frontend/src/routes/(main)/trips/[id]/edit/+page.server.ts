@@ -63,8 +63,14 @@ export let actions = {
         }
     
     },
-    admin_check: async ({ params }) => {
+    admin_check: async ({ params, locals }) => {
         let id = Number(params.id)
+        let user = await prisma.users.findUnique({
+            where: {id: locals.session?.user_id}
+        })
+        if (user?.role != 'admin') {
+            return fail(403, { message: "Forbitten" });
+        }
         let trip = await prisma.trips.findUnique({
             where: { id },
         })
