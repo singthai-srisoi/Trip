@@ -18,8 +18,9 @@
 
     import { io } from 'socket.io-client'
     import { enhance } from "$app/forms";
+	import { PUBLIC_WS_ENDPOINT } from "$env/static/public";
 
-    const socket = io('http://localhost:3000') // connects to same origin
+    const socket = io(PUBLIC_WS_ENDPOINT) // connects to same origin
 
     const tripId = data.id // example
 
