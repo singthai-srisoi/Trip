@@ -33,7 +33,7 @@
         // get all id
         let ids = trip_chats.map((a) => a.id)
         if (!ids.includes(chat.id)) {
-            trip_chats = [...trip_chats, ...chat]
+            trip_chats = [...trip_chats, chat]
         }
         if ("Notification" in window && Notification.permission === "granted") {
             new Notification("New Chat Message", {

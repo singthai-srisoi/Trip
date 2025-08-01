@@ -47,10 +47,9 @@ pgClient.on('notification', (msg) => {
     const driverId = chat.driver_id?.toString()
 
     // 1️⃣ Notify trip-specific subscribers
-    const chatList = [chat]
     if (tripId && tripSockets.has(tripId)) {
       for (const socketId of tripSockets.get(tripId)!) {
-        io.sockets.sockets.get(socketId)?.emit('trip_chat', chatList)
+        io.sockets.sockets.get(socketId)?.emit('trip_chat', chat)
       }
     }
 
