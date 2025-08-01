@@ -4,6 +4,9 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 const config = {
 	preprocess: vitePreprocess(),
 	kit: { 
+		csrf: {
+			checkOrigin: false // 🔥 Allow cross-origin POSTs
+		},
 		adapter: adapter(),
 		alias: {
 			"$generated": "src/generated",

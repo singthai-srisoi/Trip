@@ -4,13 +4,21 @@ import { Server } from 'socket.io'
 import { Client } from 'pg'
 import { handler } from '../build/handler.js'
 import 'dotenv/config'
+import path from 'path'
 
 // -------------------- Server Setup --------------------
 const port = 3000
 const app = express()
 const server = createServer(app)
 const io = new Server(server, {
-  cors: { origin: 'http://localhost:5173' } // allow Vite dev
+  cors: { origin: [
+      'https://trip.dnbtrading.website',
+      'http://localhost:5173', 'http://127.0.0.1:5173',
+      'http://localhost:3000', 'http://127.0.0.1:3000',
+    ],
+    methods: ['GET', 'POST'],
+    credentials: true 
+  } // allow Vite dev
 })
 
 // -------------------- Socket Tracking --------------------
@@ -99,6 +107,12 @@ io.on('connection', (socket) => {
 })
 
 // -------------------- Mount SvelteKit --------------------
+// -------------------- Serve SvelteKit safely --------------------
+// Serve static files without forcing .br
+app.use(express.static(path.join(process.cwd(), 'build/client'), {
+  extensions: ['html']
+}))
+
 app.use(handler)
 
 // -------------------- Start Server --------------------
