@@ -1,6 +1,8 @@
 import prisma from "$lib/server/prisma.server";
 import { message } from "sveltekit-superforms";
 import type { Actions, PageServerLoad } from "./$types";
+import { deleteSession, validateSessionToken } from "$lib/server/session.server";
+import { redirect } from "@sveltejs/kit";
 
 export let load: PageServerLoad = async ({ locals }) => {
     let user_id = locals.session?.user_id;
@@ -97,5 +99,34 @@ export let actions: Actions = {
         }
 
 
-    }
+    },
+    logout: async ({ locals, cookies }) => {
+        const token = cookies.get('session')
+        if (token) {
+            try {
+                let session = await validateSessionToken(token)
+                // console.log(session)
+                // console.log(await prisma.session.findUnique({
+                //     where: { id: session?.id }
+                // }))
+                // Remove session from DB
+                await prisma.session.delete({
+                    where: { id: session?.id }
+                })
+            } catch (err) {
+                // Ignore if session already deleted
+                console.error('Logout: session not found or already deleted', err)
+            }
+
+            // Delete cookie (make sure path matches how it was set)
+            cookies.delete('session', {
+                path: '/',       // Important: must match your cookie path
+                httpOnly: true,  // Recommended for security
+                secure: true,    // Only over HTTPS in production
+                sameSite: 'lax'
+            })
+        }
+        // Redirect to login after logout
+        throw redirect(302, '/login')
+    },
 }

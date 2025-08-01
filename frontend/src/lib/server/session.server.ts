@@ -118,7 +118,7 @@ export async function getSession(sessionId: string): Promise<Session | null> {
 	return session;
 }
 
-async function deleteSession(sessionId: string): Promise<void> {
+export async function deleteSession(sessionId: string): Promise<void> {
 	// await executeQuery(dbPool, "DELETE FROM session WHERE id = ?", [sessionId]);
     await prisma.session.delete({
         where: {

@@ -15,7 +15,7 @@ export function isProtectedRoute(pathname: string) {
 
 export const handle: Handle = async ({ event, resolve }) => {
     const pathname = new URL(event.request.url).pathname
-    console.log(event.route)
+    // console.log(event.route)
 
     // Redirect root to /login
     if (pathname === "/") {

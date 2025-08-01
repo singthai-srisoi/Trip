@@ -22,6 +22,9 @@
 
 <h1 class="text-2xl">Preference</h1>
 <h2 class="text-lg">{data.user?.username}</h2>
+<form action="?/logout" method="post">
+    <button type="submit" class="btn btn-xs btn-error">Logout</button>
+</form>
 
 
 {#if form?.success}
