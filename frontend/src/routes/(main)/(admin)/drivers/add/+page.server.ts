@@ -19,12 +19,11 @@ export let actions = {
         const encoder = new TextEncoder();
         const raw = encoder.encode(DEFAULT_PASSWORD);
         const hashedPassword = await crypto.subtle.digest("SHA-256", raw);
+
+        form.data.hashed_password = Buffer.from(hashedPassword).toString('base64')
         
         let res = await prisma.users.create({
-            data: {
-                hashed_password: Buffer.from(hashedPassword).toString('base64'),
-                ...form.data
-            }
+            data: {...form.data}
         })
         if (!res) {
             return fail(500, { form, message: 'Failed to create trip' })
