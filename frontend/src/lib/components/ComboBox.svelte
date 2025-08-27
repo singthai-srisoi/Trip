@@ -81,7 +81,7 @@
     <Popover.Content class="w-full p-0">
         <Command.Root class="w-full pt-3">
             <Command.Input placeholder="Search..." />
-            <Command.List>
+            <Command.List class="max-h-[12rem] overflow-y-auto">
                 <Command.Empty>No Value</Command.Empty>
                 <Command.Group value="frameworks">
                 {#each items as item (item.value)}

@@ -38,6 +38,10 @@ export let actions = {
             return fail(400, { form, message: "Missing trip ID" })
         }
 
+         if (form.data.email == 'null') {
+            form.data.email = undefined
+        }
+
 
         const res = await prisma.users.update({
             where: { id: userId },

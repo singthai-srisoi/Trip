@@ -28,6 +28,7 @@ export let actions = {
     edit: async ({ request }) => {
 
         const form = await superValidate(request, zod(userSchema))
+        console.log(form.data)
 
         if (!form.valid) {
             return fail(400, { form })
@@ -38,6 +39,9 @@ export let actions = {
             return fail(400, { form, message: "Missing user ID" })
         }
 
+        if (form.data.email == 'null') {
+            form.data.email = undefined
+        }
 
         const res = await prisma.users.update({
             where: { id: userId },
