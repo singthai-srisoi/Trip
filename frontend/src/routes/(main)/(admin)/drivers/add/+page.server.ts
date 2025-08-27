@@ -26,9 +26,9 @@ export let actions = {
             data: {...form.data}
         })
         if (!res) {
-            return fail(500, { form, message: 'Failed to create trip' })
+            return fail(500, { form, message: 'Failed to create driver' })
         }
-        return redirect(303, `/drivers/${res.id}`)
+        return redirect(303, `/drivers/${res.id}?success=true`)
     
     }
 } satisfies Actions

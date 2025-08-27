@@ -5,7 +5,8 @@ import type { Actions, PageServerLoad } from "./$types";
 import { fail } from '@sveltejs/kit';
 import { destinationSchema } from '$lib/schema/DestinationSchema';
 
-export let load: PageServerLoad = async ({ params }) => {
+export let load: PageServerLoad = async ({ params, url }) => {
+    let success = url.searchParams.get("success") === "true";
     let destination = await prisma.destinations.findUnique({
         where: {
             id: Number(params.id) ?? 0
@@ -14,7 +15,10 @@ export let load: PageServerLoad = async ({ params }) => {
     const form = await superValidate(zod(destinationSchema));
 
     return {
-        form,
+        form: {
+            success,
+            message: success ? 'Destination added successfully' : 'Failed to add destination'
+        },
         destination,
     }
 }

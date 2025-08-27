@@ -20,7 +20,7 @@ export let actions = {
         if (!res) {
             return fail(500, { form, message: 'Failed to create trip' })
         }
-        return redirect(303, `/vehicles/${res.id}`)
+        return redirect(303, `/vehicles/${res.id}?success=true`)
     
     }
 } satisfies Actions

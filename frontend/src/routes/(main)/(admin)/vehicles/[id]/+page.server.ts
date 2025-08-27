@@ -6,16 +6,19 @@ import { fail } from '@sveltejs/kit';
 import { vehicleSchema } from '$lib/schema/VehicleSchema';
 import { success } from 'zod/v4';
 
-export let load: PageServerLoad = async ({ params }) => {
+export let load: PageServerLoad = async ({ params, url }) => {
+    let success = url.searchParams.get('success') === 'true'
     let vehicle = await prisma.vehicles.findUnique({
         where: {
             id: Number(params.id) ?? 0
         }
     })
-    const form = await superValidate(zod(vehicleSchema));
-
+    // const form = await superValidate(zod(vehicleSchema));
     return {
-        form,
+        form: {
+            success,
+            message: success ? 'Vehicle added successfully' : 'Failed to add vehicle'
+        },
         vehicle,
     }
 }

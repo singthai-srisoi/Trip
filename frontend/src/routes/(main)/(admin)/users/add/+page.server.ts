@@ -27,9 +27,9 @@ export let actions = {
             }
         })
         if (!res) {
-            return fail(500, { form, message: 'Failed to create trip' })
+            return fail(500, { form, message: 'Failed to create user' })
         }
-        return redirect(303, `/users/${res.id}`)
+        return redirect(303, `/users/${res.id}?success=true`)
     
     }
 } satisfies Actions

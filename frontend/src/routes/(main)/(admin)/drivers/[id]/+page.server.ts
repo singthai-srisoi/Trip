@@ -5,7 +5,8 @@ import type { Actions, PageServerLoad } from "./$types";
 import { fail } from '@sveltejs/kit';
 import { userSchema } from '$lib/schema/UserSchema';
 
-export let load: PageServerLoad = async ({ params }) => {
+export let load: PageServerLoad = async ({ params, url }) => {
+    let success = url.searchParams.get("success") === "true";
     let driver = await prisma.users.findUnique({
         where: {
             id: Number(params.id) ?? 0
@@ -14,7 +15,10 @@ export let load: PageServerLoad = async ({ params }) => {
     const form = await superValidate(zod(userSchema));
 
     return {
-        form,
+        form: {
+            success,
+            message: success ? 'Driver added successfully' : 'Failed to add driver'
+        },
         driver,
     }
 }
@@ -34,21 +38,16 @@ export let actions = {
             return fail(400, { form, message: "Missing trip ID" })
         }
 
-        try {
-            const res = await prisma.users.update({
-                where: { id: userId },
-                data: {
-                    ...form.data,
-                },
-            })
 
-            // return redirect(303, `/trips/${res.id}/edit`)
-        } catch (error) {
-            return fail(500, {
-                form,
-                message: "Failed to update trip",
-            })
-        }
+        const res = await prisma.users.update({
+            where: { id: userId },
+            data: {
+                ...form.data,
+            },
+        })
+
+        return { success: true, message: "Driver updated successfully" }
+
     
     }
 } satisfies Actions
